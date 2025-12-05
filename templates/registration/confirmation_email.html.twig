@@ -1,0 +1,18 @@
+<h1>Bienvenue !</h1>
+
+<p>Merci de vous etre inscrit sur notre plateforme.</p>
+
+<p>
+    Pour finaliser votre inscription, veuillez confirmer votre adresse email en cliquant sur ce lien :
+    <br><br>
+    <a href="{{ signedUrl|raw }}">Confirmer mon adresse email</a>
+</p>
+
+<p>
+    Ce lien expirera dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+</p>
+
+<p>
+    A tres vite,<br>
+    L'equipe securite.
+</p>

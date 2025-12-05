@@ -1,0 +1,16 @@
+{% for label, messages in app.flashes %}
+    {% set alertType = 'info' %}
+    {% if label in ['error', 'danger', 'verify_email_error'] %}
+        {% set alertType = 'danger' %}
+    {% elseif label == 'success' %}
+        {% set alertType = 'success' %}
+    {% elseif label == 'warning' %}
+        {% set alertType = 'warning' %}
+    {% endif %}
+    {% for message in messages %}
+        <div class="alert alert-{{ alertType }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+        </div>
+    {% endfor %}
+{% endfor %}

@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h1 class="h3 mb-4 text-center">Connexion</h1>
+
+                    {% if error %}
+                        <div class="alert alert-danger">
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                        </div>
+                    {% endif %}
+
+                    {% if app.user %}
+                        <div class="alert alert-info" role="alert">
+                            Vous etes connecte en tant que {{ app.user.userIdentifier }}.
+                            <a class="alert-link" href="{{ path('app_logout') }}">Se deconnecter</a>
+                        </div>
+                    {% else %}
+                        <form method="post" novalidate>
+                            <div class="mb-3">
+                                <label for="inputEmail" class="form-label">Email</label>
+                                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                            </div>
+                            <div class="mb-3">
+                                <label for="inputPassword" class="form-label">Mot de passe</label>
+                                <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                            </div>
+                            <div class="mb-3 text-end">
+                                <a href="{{ path('app_reset_password_request') }}" class="small">Mot de passe oublie ?</a>
+                            </div>
+                            <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" value="on" id="remember_me" name="_remember_me">
+                                <label class="form-check-label" for="remember_me">
+                                    Se souvenir de moi
+                                </label>
+                            </div>
+
+                            <div class="d-grid">
+                                <button class="btn btn-primary" type="submit">
+                                    Se connecter
+                                </button>
+                            </div>
+                        </form>
+                        <p class="mb-0 mt-3 text-center">
+                            Pas encore de compte ? <a href="{{ path('app_register') }}">Inscrivez-vous</a>.
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

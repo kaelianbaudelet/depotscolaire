@@ -1,0 +1,14 @@
+APP_DEBUG=0
+APP_ENV=prod
+
+# Secrets must be provided by the CI pipeline before deployment.
+APP_SECRET="${APP_SECRET}"
+
+DATABASE_URL="mysql://${PROD_DB_USER}:${PROD_DB_PASSWORD}@db:3306/${PROD_DB_NAME}?serverVersion=10.11.6-MariaDB&charset=utf8mb4"
+
+MAILER_DSN="${MAILER_DSN}"
+MAILER_FROM_EMAIL="${MAILER_FROM_EMAIL}"
+MAILER_FROM_NAME="${MAILER_FROM_NAME}"
+
+TRUSTED_PROXIES=0.0.0.0/0
+TRUSTED_HOSTS="${TRAEFIK_HOST}"

@@ -1,0 +1,13 @@
+.git
+/var
+/vendor
+/node_modules
+/tests
+/.idea
+/.vscode
+/.DS_Store
+/docker-compose*.yml
+/.env.local
+/.env.*.local
+/.github
+Dockerfile

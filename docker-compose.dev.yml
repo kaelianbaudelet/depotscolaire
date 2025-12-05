@@ -1,0 +1,77 @@
+services:
+  app:
+    build:
+      context: .
+      target: symfony_dev
+    container_name: ${COMPOSE_PROJECT_NAME:-symfony}_app
+    hostname: app
+    ports:
+      - "8080:80"
+    environment:
+      APP_ENV: dev
+      APP_DEBUG: 1
+      APP_SECRET: dev-secret
+      DATABASE_URL: mysql://symfony:symfony@db:3306/symfony?serverVersion=10.11.6-MariaDB
+      MAILER_DSN: smtp://mailpit:1025
+    volumes:
+      - ./:/var/www/html:delegated
+      - symfony_var:/var/www/html/var
+    depends_on:
+      db:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  db:
+    image: mariadb:10.11
+    container_name: ${COMPOSE_PROJECT_NAME:-symfony}_db
+    hostname: db
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: symfony
+      MARIADB_USER: symfony
+      MARIADB_PASSWORD: symfony
+      MARIADB_ROOT_PASSWORD: rootpass
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mariadb-admin",
+          "ping",
+          "-h",
+          "127.0.0.1",
+          "-uroot",
+          "-prootpass",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  adminer:
+    image: adminer:4
+    container_name: ${COMPOSE_PROJECT_NAME:-symfony}_adminer
+    hostname: adminer
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+    ports:
+      - "8081:8080"
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: ${COMPOSE_PROJECT_NAME:-symfony}_mailpit
+    hostname: mailpit
+    restart: unless-stopped
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
+volumes:
+  db_data:
+  symfony_var:

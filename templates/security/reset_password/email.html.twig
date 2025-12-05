@@ -1,0 +1,18 @@
+<h1>Reinitialisation de mot de passe</h1>
+
+<p>Bonjour {{ user.firstName ?? user.email }},</p>
+
+<p>
+    Une demande de reinitialisation de mot de passe a ete effectuee sur votre compte.
+    Cliquez sur le lien ci-dessous pour definir un nouveau mot de passe :
+</p>
+
+<p>
+    <a href="{{ resetUrl }}">Reinitialiser mon mot de passe</a>
+</p>
+
+<p>
+    Ce lien expirera le {{ expiresAt|date('d/m/Y H:i') }}.
+    Si vous n'etes pas a l'origine de cette demande, vous pouvez ignorer cet email.
+</p>
+
