@@ -1,0 +1,39 @@
+<header class="app-header">
+    <div class="app-container app-header__content">
+        <a class="app-header__brand" href="{{path('app_accueil')}}">
+            <img src="{{ asset('images/brand.svg') }}" alt="Logo" height="28px">
+        </a>
+        
+        <button class="app-header__toggle" type="button" aria-label="Menu">
+            <span>☰</span>
+        </button>
+
+        <nav class="app-header__nav">
+            {% set currentRoute = app.request.attributes.get('_route') %}
+            
+            {# Dashboard Header: No "Accueil" link, Logo serves as home #}
+
+            {% if 'ROLE_TEACHER' in app.user.roles %}
+                <a class="app-header__link {{ currentRoute starts with 'app_classroom' ? 'app-header__link--active' }}" href="{{ path('app_classroom_index') }}">Classes</a>
+            {% else %}
+                <a class="app-header__link {{ currentRoute starts with 'app_classroom' ? 'app-header__link--active' }}" href="{{ path('app_classroom_index') }}">Mes Classes</a>
+            {% endif %}
+
+            {% if 'ROLE_ADMIN' in app.user.roles %}
+                <a class="app-header__link {{ currentRoute starts with 'app_users' ? 'app-header__link--active' }}" href="{{ path('app_users_list') }}">Administration</a>
+            {% endif %}
+
+            <div class="dropdown">
+                <button class="app-header__link dropdown-toggle" type="button" aria-expanded="false">
+                    {{ app.user.firstName ?? app.user.userIdentifier }}
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{{ path('app_profile') }}">Mon Profil</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item text-danger" href="{{ path('app_logout') }}">Déconnexion</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>

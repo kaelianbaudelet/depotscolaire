@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -67,8 +68,24 @@ class RegistrationFormType extends AbstractType
                     'placeholder' => '75001',
                 ],
             ])
+            ->add('userRole', ChoiceType::class, [
+                'mapped' => false,
+                'label' => 'Je suis...',
+                'choices' => [
+                    'Un étudiant' => 'student',
+                    'Un professeur' => 'teacher',
+                ],
+                'expanded' => true, // Radio buttons
+                'multiple' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez choisir votre statut.',
+                    ]),
+                ],
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
+                'label' => 'J\'accepte les conditions d\'utilisation',
                 'constraints' => [
                     new IsTrue([
                         'message' => 'Vous devez accepter les conditions d\'utilisation.',
@@ -79,6 +96,7 @@ class RegistrationFormType extends AbstractType
                 // Au lieu d'être lié directement à l'entité,
                 // ce champ est lu et encodé dans le contrôleur.
                 'mapped' => false,
+                'label' => 'Mot de passe',
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
                     new NotBlank([

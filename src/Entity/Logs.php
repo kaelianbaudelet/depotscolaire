@@ -36,6 +36,7 @@ class Logs
     private ?string $userAgent = null;
 
     #[ORM\ManyToOne(inversedBy: 'logs')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?User $User = null;
 
     public function getId(): ?int

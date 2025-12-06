@@ -1,0 +1,20 @@
+<header class="app-header">
+    <div class="app-container app-header__content">
+        <a class="app-header__brand" href="{{path('app_accueil')}}">
+            <img src="{{ asset('images/brand.svg') }}" alt="Logo" height="28px">
+        </a>
+        
+        <button class="app-header__toggle" type="button" aria-label="Menu">
+            <span>☰</span>
+        </button>
+
+        <nav class="app-header__nav">
+            {% set currentRoute = app.request.attributes.get('_route') %}
+            
+            <a class="app-header__link {{ currentRoute starts with 'app_accueil' ? 'app-header__link--active' }}" href="{{ path('app_accueil') }}">Accueil</a>
+            
+            <a class="app-header__link" href="{{ path('app_login') }}">Connexion</a>
+            <a class="app-header__link" href="{{ path('app_register') }}">Inscription</a>
+        </nav>
+    </div>
+</header>

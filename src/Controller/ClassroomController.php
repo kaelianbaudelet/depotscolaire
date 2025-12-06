@@ -222,7 +222,7 @@ class ClassroomController extends AbstractController
         $editForm = null;
         $assignmentForm = null;
 
-        if ($classroom->getTeacher() === $user) {
+        if ($classroom->getTeacher() === $user || $this->isGranted('ROLE_ADMIN')) {
             $editForm = $this->createForm(ClassroomType::class, $classroom, [
                 'action' => $this->generateUrl('app_classroom_edit', ['id' => $classroom->getId()]),
             ]);

@@ -111,9 +111,11 @@ h1, h2, h3, h4 {
 }
 
 .app-header__brand {
+    display:flex;
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--color-bg-white);
+    align-self: center; /* Ensures vertical alignment within a flex container */
 }
 .app-header__brand:hover {
     color: rgba(255, 255, 255, 0.9);
@@ -202,6 +204,35 @@ h1, h2, h3, h4 {
 .app-btn--danger:hover {
     background-color: var(--color-danger);
     color: var(--color-bg-white);
+}
+
+/* --- Alerts --- */
+.alert {
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-md);
+    border-left: 4px solid transparent;
+    background-color: var(--color-bg-white);
+    font-weight: 500;
+    line-height: 1.5;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Modern gradient hint or soft bg */
+.alert-success {
+    background-color: #f0fdf4; /* faint green */
+    color: #166534; /* dark green text */
+}
+
+.alert-error {
+    background-color: #fef2f2; /* faint red */
+    color: #991b1b; /* dark red text */
+}
+
+.alert-warning {
+    background-color: #fffbeb; /* faint amber */
+    color: #92400e; /* dark amber text */
 }
 
 /* --- Forms --- */
@@ -627,7 +658,7 @@ h1, h2, h3, h4 {
     box-shadow: var(--shadow-lg);
     padding: 2rem;
     width: 100%;
-    max-width: 450px;
+    max-width: 550px;
 }
 
 .auth-card--wide {
@@ -790,4 +821,185 @@ h1, h2, h3, h4 {
 .table-wrapper {
     overflow-x: auto;
 }
+
+/* --- Landing Page --- */
+.hero-section {
+    padding: 6rem 1rem;
+    text-align: center;
+    background: linear-gradient(to bottom, var(--color-bg-white) 0%, var(--color-bg-light) 100%);
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: var(--color-text-main);
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--color-text-muted);
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.features-section {
+    padding: 5rem 0;
+    background-color: var(--color-bg-white);
+}
+
+.section-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
+    color: var(--color-text-main);
+}
+
+.text-center { text-align: center; }
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+}
+
+.feature-card {
+    padding: 2rem;
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg-light);
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-primary);
+    background-color: var(--color-bg-white);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.feature-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--color-text-main);
+}
+
+.feature-desc {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.cta-section {
+    padding: 5rem 1rem;
+    text-align: center;
+    background-color: var(--color-primary);
+    color: var(--color-bg-white);
+}
+
+.cta-content {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.cta-content h2 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--color-bg-white);
+}
+
+.cta-content p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+/* Button Variants */
+.app-btn--lg {
+    padding: 0.875rem 1.75rem;
+    font-size: 1.125rem;
+}
+
+.app-btn--outline {
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-main);
+}
+.app-btn--outline:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.app-btn--white {
+    background-color: var(--color-bg-white);
+    color: var(--color-primary);
+    border: 1px solid var(--color-bg-white);
+}
+.app-btn--white:hover {
+    background-color: transparent;
+    color: var(--color-bg-white);
+}
+
+
+/* --- Footer --- */
+.app-footer {
+    padding: 2rem 0;
+    margin-top: auto;
+    border-top: 1px solid var(--color-border);
+    background-color: var(--color-bg-white);
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.app-footer__text {
+    margin: 0;
+}
+
+
+/* --- Role Selection --- */
+.role-selection {
+    display: flex;
+    gap: 2rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+/* --- Utilities & Misc --- */
+.app-divider {
+    width: 100%;
+    margin: 1rem 0;
+    border: 0;
+    border-top: 1px solid var(--border-color);
+}
+
 

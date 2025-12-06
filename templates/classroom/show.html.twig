@@ -19,7 +19,7 @@
             <h1 class="page-header__title">{{ classroom.name }}</h1>
         </div>
         
-        {% if app.user == classroom.teacher %}
+        {% if app.user == classroom.teacher or is_granted('ROLE_ADMIN') %}
             <div class="page-header__actions">
                 <!-- Invite Trigger -->
                 <button class="app-btn app-btn--primary" onclick="openModal('inviteModal')">
@@ -92,7 +92,7 @@
                         <small class="text-muted">{{ student.email }}</small>
                     </div>
                     
-                    {% if app.user == classroom.teacher %}
+                    {% if app.user == classroom.teacher or is_granted('ROLE_ADMIN') %}
                         <div class="resource-card__footer">
                             <form action="{{ path('app_classroom_remove_student', {'id': classroom.id, 'student_id': student.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir retirer cet élève de la classe ?');" class="w-100">
                                 <input type="hidden" name="_token" value="{{ csrf_token('remove_student' ~ student.id) }}">
@@ -145,8 +145,14 @@
                             {{ form_row(editForm.name, {'attr': {'class': 'form-input'}}) }}
                         </div>
 
-                        <div class="form-actions">
+                        <div class="form-actions display-flex-column gap-2">
                             <button class="app-btn app-btn--primary btn-full">Enregistrer les modifications</button>
+                            
+                            <hr class="app-divider">
+                            
+                            <button type="button" class="app-btn app-btn--danger app-btn--outline btn-full" onclick="confirmDeleteClass()">
+                                Supprimer la classe
+                            </button>
                         </div>
                     {{ form_end(editForm) }}
                 </div>
@@ -184,6 +190,28 @@
             </div>
         </div>
     {% endif %}
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteConfirmModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title text-danger">Supprimer la classe ?</h3>
+                <button class="modal-close" onclick="closeModal('deleteConfirmModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Attention, cette action est <strong>irréversible</strong>.</p>
+                <p>Tous les devoirs, les rendus des élèves et l'historique de cette classe seront définitivement effacés.</p>
+                
+                <form action="{{ path('app_classroom_delete', {'id': classroom.id}) }}" method="post" class="mt-4">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ classroom.id) }}">
+                    <div class="form-actions">
+                        <button type="button" class="app-btn app-btn--outline" onclick="closeModal('deleteConfirmModal')">Annuler</button>
+                        <button type="submit" class="app-btn app-btn--danger">Confirmer la suppression</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
     <script>
@@ -233,6 +261,12 @@
             .catch(error => {
                 feedback.innerHTML = `<div class="text-danger">Une erreur est survenue.</div>`;
             });
+        }
+
+        // Delete Confirmation Logic
+        function confirmDeleteClass() {
+            closeModal('editModal');
+            openModal('deleteConfirmModal');
         }
     </script>
 </div>

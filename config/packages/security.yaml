@@ -3,6 +3,10 @@ security:
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+    role_hierarchy:
+        ROLE_TEACHER: [ROLE_USER]
+        ROLE_ADMIN: [ROLE_TEACHER]
+
     providers:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
@@ -44,6 +48,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/adm-, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
 
 when@test:
     security:
