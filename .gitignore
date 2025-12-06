@@ -12,3 +12,10 @@
 # Deployment artefacts generated in CI
 docker/env/prod.env
 docker/env/prod-db.env
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###

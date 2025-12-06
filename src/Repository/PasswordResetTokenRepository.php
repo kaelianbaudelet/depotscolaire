@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Pour gérer les tokens de réinitialisation de mot de passe.
+ *
  * @extends ServiceEntityRepository<PasswordResetToken>
  */
 class PasswordResetTokenRepository extends ServiceEntityRepository

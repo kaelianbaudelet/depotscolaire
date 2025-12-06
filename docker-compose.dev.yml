@@ -11,7 +11,7 @@ services:
       APP_ENV: dev
       APP_DEBUG: 1
       APP_SECRET: dev-secret
-      DATABASE_URL: mysql://symfony:symfony@db:3306/symfony?serverVersion=10.11.6-MariaDB
+      DATABASE_URL: mysql://symfony:symfony@db:3306/symfony?serverVersion=11.4.2-MariaDB&charset=utf8mb4
       MAILER_DSN: smtp://mailpit:1025
     volumes:
       - ./:/var/www/html:delegated
@@ -23,7 +23,7 @@ services:
       - "host.docker.internal:host-gateway"
 
   db:
-    image: mariadb:10.11
+    image: mariadb:latest
     container_name: ${COMPOSE_PROJECT_NAME:-symfony}_db
     hostname: db
     restart: unless-stopped
@@ -52,7 +52,7 @@ services:
       - db_data:/var/lib/mysql
 
   adminer:
-    image: adminer:4
+    image: adminer:latest
     container_name: ${COMPOSE_PROJECT_NAME:-symfony}_adminer
     hostname: adminer
     restart: unless-stopped

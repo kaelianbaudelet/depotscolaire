@@ -9,6 +9,10 @@ use App\Repository\PasswordResetTokenRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * Gère le cycle de vie de la réinitialisation de mot de passe.
+ * Création de tokens, validation, expiration... tout est là.
+ */
 class PasswordResetManager
 {
     private const TOKEN_TTL = '+1 hour';
@@ -20,6 +24,9 @@ class PasswordResetManager
     }
 
     /**
+     * Crée un token sécurisé pour un utilisateur.
+     * Invalide les anciens tokens pour faire le ménage.
+     *
      * @return array{0: PasswordResetToken, 1: string}
      */
     public function createToken(User $user): array
@@ -41,6 +48,9 @@ class PasswordResetManager
         return [$resetToken, $plainToken];
     }
 
+    /**
+     * Vérifie si un token reçu est valide (existant, pas expiré, pas déjà utilisé).
+     */
     public function validateToken(string $selector, string $plainToken): PasswordResetToken
     {
         $token = $this->tokenRepository->findOneBy(['selector' => $selector]);

@@ -13,6 +13,10 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use Symfony\Component\Validator\Constraints\Regex;
 
+/**
+ * Formulaire de réinitialisation de mot de passe (après avoir cliqué sur le lien email).
+ * On ne demande PLUS l'ancien mot de passe (puisqu'on l'a oublié !).
+ */
 class ResetPasswordFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -54,7 +58,7 @@ class ResetPasswordFormType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Reinitialiser le mot de passe',
-                'attr' => ['class' => 'btn btn-primary'],
+                'attr' => ['class' => 'app-btn app-btn--primary btn-full'],
             ]);
     }
 

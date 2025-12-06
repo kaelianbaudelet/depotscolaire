@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Classe{% endblock %}
+
+{% block body %}
+<div class="center-wrapper">
+    <div class="auth-card">
+        <h1 class="auth-header">Créer une nouvelle classe</h1>
+
+        {{ form_start(form) }}
+            <div class="field-group">
+                {{ form_row(form.name, {'attr': {'class': 'form-input'}}) }}
+            </div>
+
+
+            <div class="form-actions">
+                <button class="app-btn app-btn--primary">Créer la classe</button>
+                 <a href="{{ path('app_classroom_index') }}" class="app-btn app-btn--primary btn-secondary">Annuler</a>
+            </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

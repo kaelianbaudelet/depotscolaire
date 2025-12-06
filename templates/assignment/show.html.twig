@@ -1,0 +1,150 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ assignment.title }}{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb" class="app-breadcrumb">
+        <ol class="app-breadcrumb__list">
+            <li class="app-breadcrumb__item">
+                <a href="{{ path('app_classroom_index') }}" class="app-breadcrumb__link">{{ is_granted('ROLE_ADMIN') ? 'Classes' : 'Mes Classes' }}</a>
+            </li>
+            <li class="app-breadcrumb__item">
+                <a href="{{ path('app_classroom_show', {'id': assignment.classroom.id}) }}" class="app-breadcrumb__link">{{ assignment.classroom.name }}</a>
+            </li>
+            <li class="app-breadcrumb__item app-breadcrumb__item--active" aria-current="page">
+                {{ assignment.title }}
+            </li>
+        </ol>
+    </nav>
+<div class="page-wrapper">
+    <div class="resource-card">
+        <div class="page-header">
+             <h3 class="page-header__title">{{ assignment.title }}</h3>
+             {% if is_granted('ROLE_TEACHER') and app.user == assignment.classroom.teacher %}
+                 <button class="app-btn app-btn--primary" onclick="openModal('editModal')">
+                     Modifier
+                 </button>
+             {% endif %}
+        </div>
+        
+        <h6 class="resource-card__subtitle mb-sm">
+            Pour le : {{ assignment.dueDate ? assignment.dueDate|date('d/m/Y') : 'Non défini' }}
+        </h6>
+
+        <p class="resource-card__content text-pre-line">{{ assignment.description }}</p>
+
+        {% if assignment.attachments is not empty %}
+            <h6 class="mb-sm">Fichiers joints :</h6>
+            <ul class="attachment-list">
+                {% for attachment in assignment.attachments %}
+                    <li>
+                        <a href="{{ asset('uploads/attachments/' ~ attachment) }}" target="_blank" class="attachment-link">
+                            📄 {{ attachment }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    {% if is_granted('ROLE_STUDENT') %}
+        <div class="mt-lg">
+            <h4 class="mb-sm">Mon travail</h4>
+            
+            {% if submission %}
+                 <div class="resource-card bg-light">
+                    <h5 class="text-success mb-sm"><i class="bi bi-check-circle-fill"></i> Devoir rendu</h5>
+                    <p class="mb-sm">Remis le : <strong>{{ submission.submittedAt|date('d/m/Y à H:i') }}</strong></p>
+                    
+                    {% if submission.files %}
+                        <h6 class="mb-sm">Fichiers rendus :</h6>
+                        <ul class="attachment-list">
+                            {% for file in submission.files %}
+                                <li>
+                                    <span class="attachment-link">
+                                        📄 {{ file }}
+                                    </span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    
+                    {% if not is_assignment_over or assignment.allowLateSubmissions %}
+                         <div class="mt-4 border-top pt-3">
+                            <form method="post" action="{{ path('app_assignment_cancel_submission', {'id': assignment.id}) }}" onsubmit="return confirm('Attention, cela supprimera votre rendu actuel. Continuer ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('cancel_submission' ~ submission.id) }}">
+                                <button class="app-btn app-btn--danger app-btn-sm">Annuler le rendu</button>
+                            </form>
+                         </div>
+                    {% endif %}
+                 </div>
+            
+            {% elseif submission_form %}
+                {% if not is_assignment_over or assignment.allowLateSubmissions %}
+                    <div class="resource-card">
+                         {{ form_start(submission_form) }}
+                            <div class="field-group">
+                                {{ form_row(submission_form.files, {'attr': {'class': 'form-input'}}) }}
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="app-btn app-btn--primary btn-full">Rendre le devoir</button>
+                            </div>
+                        {{ form_end(submission_form) }}
+                    </div>
+                {% else %}
+                    <div class="alert alert--warning">
+                        Date limite dépassée.<br>
+                        Les rendus ne sont plus acceptés.
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+    <!-- Edit Modal (Only for teacher) -->
+    {% if editForm %}
+        <div id="editModal" class="modal-overlay">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 class="modal-title">Modifier le devoir</h3>
+                    <button class="modal-close" onclick="closeModal('editModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                     {{ form_start(editForm, {'attr': {'enctype': 'multipart/form-data'}}) }}
+                        <div class="field-group">
+                            {{ form_row(editForm.title, {'attr': {'class': 'form-input'}}) }}
+                        </div>
+                        <div class="field-group">
+                            {{ form_row(editForm.description, {'attr': {'class': 'form-input', 'rows': '10'}}) }}
+                        </div>
+                        <div class="field-group">
+                            {{ form_row(editForm.dueDate, {'attr': {'class': 'form-input'}}) }}
+                        </div>
+                        <div class="field-group">
+                            {{ form_row(editForm.attachmentFiles, {'attr': {'class': 'form-input'}}) }}
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="app-btn app-btn--primary btn-full">Enregistrer les modifications</button>
+                        </div>
+                    {{ form_end(editForm) }}
+                    
+                    <div class="mt-4 border-top pt-3">
+                         {{ include('assignment/_delete_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% block stylesheets %}
+        {{ parent() }}
+        <style>
+            /* Temporaire : Styles pour la modal */
+        </style>
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ parent() }}
+    {% endblock %}
+{% endblock %}

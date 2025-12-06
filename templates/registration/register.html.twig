@@ -2,50 +2,54 @@
 
 {% block title %}Inscription{% endblock %}
 
-{% form_theme registrationForm 'bootstrap_5_layout.html.twig' %}
 
 {% block body %}
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-6 col-xl-5">
-            <div class="card shadow-sm">
-                <div class="card-body p-4">
-                    <h1 class="h3 mb-4 text-center">Creer un compte</h1>
+<div class="auth-container">
+    <div class="auth-card">
+        <h1 class="auth-header">Créer un compte</h1>
 
-                    {{ form_start(registrationForm) }}
-                        {{ form_row(registrationForm.firstName) }}
-                        {{ form_row(registrationForm.lastName) }}
-                        {{ form_row(registrationForm.email) }}
-                        {{ form_row(registrationForm.address) }}
-                        <div class="row">
-                            <div class="col-md-7">
-                                {{ form_row(registrationForm.city) }}
-                            </div>
-                            <div class="col-md-5">
-                                {{ form_row(registrationForm.postalCode) }}
-                            </div>
-                        </div>
-                        {{ form_row(registrationForm.plainPassword, {
-                            label: 'Mot de passe'
-                        }) }}
-                        <div class="alert alert-info small" role="alert">
-                            Votre mot de passe doit contenir au minimum 12 caracteres, incluant
-                            une majuscule, une minuscule, un chiffre et un caractere special.
-                        </div>
-                        {{ form_row(registrationForm.agreeTerms, {
-                            label: 'J\'accepte les conditions d\'utilisation'
-                        }) }}
-
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Creer mon compte</button>
-                        </div>
-                    {{ form_end(registrationForm) }}
-                    <p class="mb-0 mt-3 text-center">
-                        Deja inscrit ? <a href="{{ path('app_login') }}">Connectez-vous</a>.
-                    </p>
+        {{ form_start(registrationForm) }}
+            <div class="field-group">
+                {{ form_row(registrationForm.email, {'attr': {'class': 'form-input'}}) }}
+            </div>
+            
+            <div class="auth-grid">
+                <div class="field-group">
+                    {{ form_row(registrationForm.firstName, {'attr': {'class': 'form-input'}}) }}
+                </div>
+                <div class="field-group">
+                    {{ form_row(registrationForm.lastName, {'attr': {'class': 'form-input'}}) }}
                 </div>
             </div>
-        </div>
+
+            <div class="field-group">
+                {{ form_row(registrationForm.address, {'attr': {'class': 'form-input'}}) }}
+            </div>
+
+            <div class="form-row-city">
+                <div class="field-group">
+                    {{ form_row(registrationForm.city, {'attr': {'class': 'form-input'}}) }}
+                </div>
+                <div class="field-group">
+                    {{ form_row(registrationForm.postalCode, {'attr': {'class': 'form-input'}}) }}
+                </div>
+            </div>
+
+            <div class="field-group">
+                {{ form_row(registrationForm.plainPassword, {'attr': {'class': 'form-input'}}) }}
+            </div>
+            
+            <div class="field-group">
+                 <div class="form-checkbox-group">
+                    {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-checkbox-input'}}) }}
+                    {{ form_label(registrationForm.agreeTerms, null, {'label_attr': {'class': 'form-checkbox-label'}}) }}
+                </div>
+            </div>
+        {{ form_end(registrationForm) }}
+
+        <p class="auth-footer">
+            Déjà un compte ? <a href="{{ path('app_login') }}" class="auth-footer__link">Se connecter</a>
+        </p>
     </div>
 </div>
 {% endblock %}

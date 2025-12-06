@@ -7,6 +7,10 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PasswordResetTokenRepository::class)]
+/**
+ * Un jeton temporaire pour réinitialiser son mot de passe oublié.
+ * Il a une durée de vie limitée, comme un bon yaourt.
+ */
 class PasswordResetToken
 {
     #[ORM\Id]

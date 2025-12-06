@@ -9,7 +9,7 @@ services:
       APP_ENV: staging
       APP_DEBUG: 0
       APP_SECRET: ${APP_SECRET:-change-me}
-      DATABASE_URL: mysql://symfony:symfony@db:3306/symfony?serverVersion=10.11.6-MariaDB
+      DATABASE_URL: mysql://symfony:symfony@db:3306/symfony?serverVersion=11.4.2-MariaDB&charset=utf8mb4
       MAILER_DSN: smtp://mailpit:1025
     depends_on:
       db:
@@ -18,7 +18,7 @@ services:
       - "8082:80"
 
   db:
-    image: mariadb:10.11
+    image: mariadb:latest
     container_name: ${COMPOSE_PROJECT_NAME:-symfony-staging}_db
     restart: unless-stopped
     environment:

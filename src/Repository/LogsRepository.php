@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Pour aller chercher l'historique de connexion.
+ *
  * @extends ServiceEntityRepository<Logs>
  */
 class LogsRepository extends ServiceEntityRepository

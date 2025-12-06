@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ is_granted('ROLE_ADMIN') ? 'Classes' : 'Mes Classes' }}{% endblock %}
+
+{% block body %}
+<div class="page-wrapper">
+    <div class="page-header">
+        <h3 class="page-header__title">{{ is_granted('ROLE_ADMIN') ? 'Classes' : 'Mes Classes' }}</h3>
+        <div>
+            {% if is_granted('ROLE_TEACHER') %}
+                <button class="app-btn app-btn--primary" onclick="openModal('createClassroomModal')">Créer une classe</button>
+            {% endif %}
+
+        </div>
+    </div>
+
+    {% if teaching_classrooms is empty and joined_classrooms is empty %}
+        <div class="empty-state">
+            Vous n'êtes membre d'aucune classe pour le moment.
+        </div>
+    {% else %}
+        {% if teaching_classrooms|length > 0 %}
+            <div class="resource-grid">
+                {% for classroom in teaching_classrooms %}
+                     <div class="resource-card">
+                        <div class="resource-card__content">
+                            <h5 class="resource-card__title">{{ classroom.name }}</h5>
+                            <p class="resource-card__subtitle">
+                                {{ classroom.teacher.firstName }} {{ classroom.teacher.lastName }}
+                            </p>
+                            <p class="resource-card__meta">
+                                {{ classroom.students|length }} élèves
+                            </p>
+                        </div>
+                        <div class="resource-card__actions resource-card__actions--full">
+                            <a href="{{ path('app_classroom_show', {'id': classroom.id}) }}" class="app-btn app-btn--primary">Gérer la classe</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if joined_classrooms|length > 0 %}
+             <div class="resource-grid">
+                {% for classroom in joined_classrooms %}
+                    <div class="resource-card">
+                        <div class="resource-card__content">
+                            <h5 class="resource-card__title">{{ classroom.name }}</h5>
+                            <p class="resource-card__subtitle">
+                                {{ classroom.teacher.firstName }} {{ classroom.teacher.lastName }}
+                            </p>
+                            <p class="resource-card__meta">
+                                {{ classroom.students|length }} élèves
+                            </p>
+                        </div>
+                         <div class="resource-card__actions resource-card__actions--full">
+                            <a href="{{ path('app_classroom_show', {'id': classroom.id}) }}" class="app-btn app-btn--primary btn-outline-primary">Accéder</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <!-- Create Classroom Modal -->
+    {% if form %}
+        <div id="createClassroomModal" class="modal-overlay">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 class="modal-title">Créer une nouvelle classe</h3>
+                    <button class="modal-close" onclick="closeModal('createClassroomModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                     {{ form_start(form) }}
+                        <div class="field-group">
+                            {{ form_row(form.name, {'attr': {'class': 'form-input', 'placeholder': 'Ex: BTS SIO 2'}}) }}
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="app-btn app-btn--primary btn-full">Créer la classe</button>
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

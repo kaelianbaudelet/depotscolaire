@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Pour vérifier l'historique des mots de passe.
+ *
  * @extends ServiceEntityRepository<Password>
  */
 class PasswordRepository extends ServiceEntityRepository

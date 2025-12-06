@@ -6,6 +6,10 @@ use App\Repository\LogsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LogsRepository::class)]
+/**
+ * Historique de connexion des utilisateurs.
+ * Big Brother is watching you ! (Ou juste pour la sécurité).
+ */
 class Logs
 {
     #[ORM\Id]
@@ -13,12 +17,21 @@ class Logs
     #[ORM\Column]
     private ?int $id = null;
 
+    /**
+     * L'adresse IP de connexion.
+     */
     #[ORM\Column(length: 255)]
     private ?string $ip = null;
 
+    /**
+     * La date et l'heure de la connexion.
+     */
     #[ORM\Column]
     private ?\DateTime $loginAt = null;
 
+    /**
+     * Le navigateur utilisé (Chrome, Firefox, etc.).
+     */
     #[ORM\Column(length: 255)]
     private ?string $userAgent = null;
 

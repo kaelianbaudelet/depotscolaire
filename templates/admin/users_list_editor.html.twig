@@ -1,50 +1,46 @@
 {% extends 'base.html.twig' %}
 
+{% extends 'base.html.twig' %}
+
 {% block body %}
-	<div class="container-fluid">
-		<h1 class="text-center text-primary mt-4 pt-4 display-1 fw-bold">
-			LISTE DES UTILISATEURS
-		</h1>
+<div class="page-wrapper">
+    <h1 class="page-header__title page-header--center">
+        ÉDITION DES UTILISATEURS
+<div class="page-wrapper mt-lg">
+    <div class="resource-card auth-card--wide center-auto">
+        <h1 class="page-header__title text-center">
+            Modifier : {{ user.firstName }} {{ user.lastName }}
+        </h1>
+        <div class="text-center">
+            <span class="text-muted">{{ user.email }}</span>
+        </div>
 
-		<div class="row justify-content-center">
-			<div class="col-12 col-md-10 bg-white p-4 text-primary">
+        {{ form_start(form) }}
+            <div class="field-group">
+                {{ form_row(form.roles, {'attr': {'class': 'form-input'}}) }}
+            </div>
+            
+            <div class="section-header">
+                Informations
+            </div>
+            
+            <div class="row">
+                 <div class="field-group">
+                    {{ form_row(form.firstName, {'attr': {'class': 'form-input'}}) }}
+                 </div>
+                 <div class="field-group">
+                    {{ form_row(form.lastName, {'attr': {'class': 'form-input'}}) }}
+                 </div>
+            </div>
 
-				<div class="table-responsive">
-					<table class="table table-hover">
-						<div class="accordion" id="accordionExample">
-							{% for user in users %}
-								<tr class="{{ cycle(['table-primary', 'table-secondary'], loop.index0) }}">
+            <div class="form-actions">
+                <button type="submit" class="app-btn app-btn--primary btn-full">Enregistrer les modifications</button>
+            </div>
+        {{ form_end(form) }}
+    </div>
 
-									<td colspan="8">
-										<div class="accordion" id="accordionExample">
-											<div class="accordion-item">
-												<h2 class="accordion-header">
-													<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ user.id }}" aria-expanded="false" aria-controls="collapse{{ user.id }}">
-														{{ user.lastname }}
-														{{ user.firstname }}
-													</button>
-												</h2>
-												<div id="collapse{{ user.id }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-													<div class="accordion-body">
-														{{ form_start(forms[user.id]) }}
-														{{ form_widget(forms[user.id]) }}
-														{{ form_end(forms[user.id]) }}
-													</div>
-												</div>
-											</div>
-										</td>
-									</td>
-								</tr>
-							{% endfor %}
-						</div>
-
-
-					</div>
-
-				</div>
-			</div>
-		</div>
-		<div class="accordion" id="accordionExample">
-
-
-		{% endblock %}
+    <div class="text-center mt-lg">
+        <a href="{{ path('app_admin_users') }}" class="app-btn app-btn--primary btn-secondary">Retour à la liste</a>
+    </div>
+</div>
+{% endblock %}

@@ -23,7 +23,7 @@ services:
       - "traefik.http.services.${TRAEFIK_ROUTER:-symfony}.loadbalancer.server.port=80"
 
   db:
-    image: mariadb:10.11
+    image: mariadb:latest
     container_name: ${COMPOSE_PROJECT_NAME:-symfony}_db
     restart: unless-stopped
     env_file:

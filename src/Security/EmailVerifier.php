@@ -10,6 +10,10 @@ use Symfony\Component\Mailer\MailerInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
+/**
+ * Service chargé de vérifier les adresses emails.
+ * Génère des signatures et valide les liens cliqués par les utilisateurs.
+ */
 class EmailVerifier
 {
     public function __construct(
@@ -19,6 +23,10 @@ class EmailVerifier
     ) {
     }
 
+    /**
+     * Envoie un email de confirmation à l'utilisateur.
+     * Le lien contient une signature unique pour éviter la triche.
+     */
     public function sendEmailConfirmation(string $verifyEmailRouteName, User $user, TemplatedEmail $email): void
     {
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
@@ -38,6 +46,9 @@ class EmailVerifier
     }
 
     /**
+     * Valide la confirmation quand l'utilisateur clique sur le lien.
+     * Si c'est bon, on marque le compte comme "vérifié".
+     *
      * @throws VerifyEmailExceptionInterface
      */
     public function handleEmailConfirmation(Request $request, User $user): void

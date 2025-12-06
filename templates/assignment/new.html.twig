@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Devoir{% endblock %}
+
+{% block body %}
+<div class="center-wrapper">
+    <div class="auth-card auth-card--medium">
+        <h1>Créer un devoir pour : {{ classroom.name }}</h1>
+
+        {{ form_start(form) }}
+            <div class="field-group">
+                {{ form_row(form.title, {'attr': {'class': 'form-input'}}) }}
+            </div>
+            <div class="field-group">
+                {{ form_row(form.description, {'attr': {'class': 'form-input', 'rows': '5'}}) }}
+            </div>
+            <div class="field-group">
+                {{ form_row(form.dueDate, {'attr': {'class': 'form-input'}}) }}
+            </div>
+            <div class="field-group">
+                 {{ form_row(form.attachmentFiles, {'attr': {'class': 'form-input'}}) }}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="app-btn app-btn--primary">Créer</button>
+                <a href="{{ path('app_classroom_show', {'id': classroom.id}) }}" class="app-btn app-btn--primary btn-secondary">Annuler</a>
+            </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

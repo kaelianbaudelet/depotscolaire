@@ -21,6 +21,10 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+/**
+ * Ce contrôleur gère la réinitialisation du mot de passe.
+ * On a tous oublié notre mot de passe un jour, c'est ici qu'on les aide à le retrouver !
+ */
 final class ResetPasswordController extends AbstractController
 {
     public function __construct(
@@ -29,6 +33,10 @@ final class ResetPasswordController extends AbstractController
     ) {
     }
 
+    /**
+     * Affiche le formulaire de demande de réinitialisation.
+     * L'utilisateur entre son email, et on lui envoie un lien magique.
+     */
     #[Route('/reset-password', name: 'app_reset_password_request')]
     public function request(
         Request $request,
@@ -47,6 +55,7 @@ final class ResetPasswordController extends AbstractController
             $email = (string) $form->get('email')->getData();
             $user = $userRepository->findOneBy(['email' => $email]);
 
+            // On ne révèle pas si l'email existe ou non pour des raisons de sécurité
             if ($user instanceof User) {
                 [$resetToken, $plainToken] = $passwordResetManager->createToken($user);
 
@@ -58,7 +67,7 @@ final class ResetPasswordController extends AbstractController
                 $emailMessage = (new TemplatedEmail())
                     ->from(new Address($this->mailerFromEmail, $this->mailerFromName))
                     ->to((string) $user->getEmail())
-                    ->subject('Reinitialisation de votre mot de passe')
+                    ->subject('Réinitialisation de votre mot de passe')
                     ->htmlTemplate('security/reset_password/email.html.twig')
                     ->context([
                         'resetUrl' => $resetUrl,
@@ -69,7 +78,7 @@ final class ResetPasswordController extends AbstractController
                 $mailer->send($emailMessage);
             }
 
-            $this->addFlash('success', 'Si un compte correspond a cette adresse, un email de reinitialisation vient d\'etre envoye.');
+            $this->addFlash('success', 'Si un compte correspond à cette adresse, un email de réinitialisation vient d\'être envoyé.');
 
             return $this->redirectToRoute('app_login');
         }
@@ -79,6 +88,10 @@ final class ResetPasswordController extends AbstractController
         ]);
     }
 
+    /**
+     * Valide la réinitialisation et permet de choisir un nouveau mot de passe.
+     * C'est l'étape finale du processus.
+     */
     #[Route('/reset-password/{selector}/{token}', name: 'app_reset_password_confirm')]
     public function reset(
         string $selector,
@@ -94,7 +107,7 @@ final class ResetPasswordController extends AbstractController
         try {
             $resetToken = $passwordResetManager->validateToken($selector, $token);
         } catch (InvalidPasswordResetTokenException) {
-            $this->addFlash('error', 'Le lien de reinitialisation est invalide ou a expire.');
+            $this->addFlash('error', 'Le lien de réinitialisation est invalide ou a expiré.');
 
             return $this->redirectToRoute('app_reset_password_request');
         }
@@ -108,11 +121,11 @@ final class ResetPasswordController extends AbstractController
             try {
                 $userPasswordManager->resetPassword($resetToken->getUser(), $newPassword);
                 $passwordResetManager->markTokenUsed($resetToken);
-                $this->addFlash('success', 'Votre mot de passe a ete reinitialise. Vous pouvez vous connecter.');
+                $this->addFlash('success', 'Votre mot de passe a été réinitialisé. Vous pouvez vous connecter à nouveau !');
 
                 return $this->redirectToRoute('app_login');
             } catch (PasswordReuseException) {
-                $form->get('newPassword')->addError(new FormError('Vous ne pouvez pas reutiliser un ancien mot de passe.'));
+                $form->get('newPassword')->addError(new FormError('Vous ne pouvez pas réutiliser un ancien mot de passe.'));
             }
         }
 

@@ -12,7 +12,9 @@
         "doctrine/doctrine-bundle": "^2.18",
         "doctrine/doctrine-migrations-bundle": "^3.7",
         "doctrine/orm": "^3.5",
+        "endroid/qr-code-bundle": "^6.0",
         "symfony/apache-pack": "*",
+        "symfony/asset": "6.4.*",
         "symfony/console": "6.4.*",
         "symfony/dotenv": "6.4.*",
         "symfony/flex": "^2",
@@ -25,6 +27,7 @@
         "symfony/security-bundle": "6.4.*",
         "symfony/twig-bundle": "6.4.*",
         "symfony/validator": "6.4.*",
+        "symfony/webpack-encore-bundle": "^2.4",
         "symfony/yaml": "6.4.*",
         "symfonycasts/verify-email-bundle": "^1.17"
     },
@@ -33,11 +36,15 @@
     },
     "config": {
         "allow-plugins": {
+            "endroid/installer": true,
             "php-http/discovery": true,
             "symfony/flex": true,
             "symfony/runtime": true
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "8.2.0"
+        }
     },
     "autoload": {
         "psr-4": {

@@ -10,6 +10,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * Formulaire de demande de réinitialisation de mot de passe.
+ * Juste un champ email, simple et basique.
+ */
 class ResetPasswordRequestFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -31,7 +35,7 @@ class ResetPasswordRequestFormType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Envoyer le lien de reinitialisation',
-                'attr' => ['class' => 'btn btn-primary'],
+                'attr' => ['class' => 'app-btn app-btn--primary btn-full'],
             ]);
     }
 

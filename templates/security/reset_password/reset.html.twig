@@ -2,28 +2,20 @@
 
 {% block title %}Nouveau mot de passe{% endblock %}
 
-{% form_theme resetForm 'bootstrap_5_layout.html.twig' %}
 
 {% block body %}
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-5">
-            <div class="card shadow-sm">
-                <div class="card-body p-4">
-                    <h1 class="h4 mb-3 text-center">Definir un nouveau mot de passe</h1>
-                    <p class="text-muted small mb-4">
-                        Le nouveau mot de passe doit contenir au moins 12 caracteres et ne pas avoir ete utilise auparavant.
-                    </p>
-                    {{ form_start(resetForm) }}
-                        {{ form_row(resetForm.newPassword.first) }}
-                        {{ form_row(resetForm.newPassword.second) }}
-                        <div class="d-grid">
-                            {{ form_widget(resetForm.submit) }}
-                        </div>
-                    {{ form_end(resetForm) }}
-                </div>
+<div class="center-wrapper">
+    <div class="auth-card">
+        <h1 class="auth-header">Définir un nouveau mot de passe</h1>
+        
+        {{ form_start(resetForm) }}
+            <div class="field-group">
+                {{ form_row(resetForm.newPassword.first, {'attr': {'class': 'form-input'}}) }}
             </div>
-        </div>
+            <div class="field-group">
+                {{ form_row(resetForm.newPassword.second, {'attr': {'class': 'form-input'}}) }}
+            </div>
+        {{ form_end(resetForm) }}
     </div>
 </div>
 {% endblock %}

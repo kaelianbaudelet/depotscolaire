@@ -13,6 +13,10 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use Symfony\Component\Validator\Constraints\Regex;
 
+/**
+ * Formulaire de changement de mot de passe (quand on est connecté).
+ * On demande l'ancien mot de passe par sécurité.
+ */
 class ChangePasswordFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -66,7 +70,7 @@ class ChangePasswordFormType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Mettre a jour le mot de passe',
-                'attr' => ['class' => 'btn btn-primary'],
+                'attr' => ['class' => 'app-btn app-btn--primary btn-full mt-sm'],
             ]);
     }
 

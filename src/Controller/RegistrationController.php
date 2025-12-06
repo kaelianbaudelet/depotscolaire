@@ -19,6 +19,10 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
+/**
+ * Contrôleur qui gère l'inscription des nouveaux utilisateurs.
+ * C'est le point d'entrée pour les nouveaux venus !
+ */
 class RegistrationController extends AbstractController
 {
     public function __construct(
@@ -27,6 +31,11 @@ class RegistrationController extends AbstractController
         #[Autowire('%env(string:MAILER_FROM_NAME)%')] private string $mailerFromName,
     ) {}
 
+    /**
+     * Gère le formulaire d'inscription.
+     * Si tout est bon, on crée le compte, on envoie un email de vérification, et on connecte l'utilisateur.
+     * Bienvenue à bord !
+     */
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
     {
@@ -39,6 +48,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // On encode le mot de passe pour la sécurité
             $plainPassword = $form->get('plainPassword')->getData();
             $hashedPassword = $userPasswordHasher->hashPassword($user, $plainPassword);
 
@@ -48,6 +58,7 @@ class RegistrationController extends AbstractController
             $user->setPassword($hashedPassword);
             $entityManager->flush();
 
+            // On envoie un email pour vérifier que l'adresse existe vraiment
             $this->emailVerifier->sendEmailConfirmation(
                 'app_verify_email',
                 $user,
@@ -58,7 +69,7 @@ class RegistrationController extends AbstractController
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
 
-            $this->addFlash('success', 'Un email de verification vous a ete envoye. Pensez a confirmer votre adresse.');
+            $this->addFlash('success', 'Un email de vérification vous a été envoyé. Pensez à confirmer votre adresse.');
 
             return $security->login($user, LoginFormAuthenticator::class, 'main');
         }
@@ -68,13 +79,17 @@ class RegistrationController extends AbstractController
         ]);
     }
 
+    /**
+     * Vérifie l'adresse email de l'utilisateur quand il clique sur le lien reçu par mail.
+     * C'est une étape cruciale pour éviter les faux comptes.
+     */
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, UserRepository $userRepository, Security $security): Response
     {
         $userId = $request->query->get('id');
 
         if (null === $userId) {
-            $this->addFlash('verify_email_error', 'Le lien de verification est invalide.');
+            $this->addFlash('verify_email_error', 'Le lien de vérification est invalide.');
 
             return $this->redirectToRoute('app_register');
         }
@@ -95,7 +110,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
 
-        $this->addFlash('success', 'Votre adresse email a bien ete verifiee.');
+        $this->addFlash('success', 'Votre adresse email a bien été vérifiée. C\'est parti !');
 
         if ($security->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('app_accueil');

@@ -7,6 +7,10 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PasswordRepository::class)]
+/**
+ * Stocke l'historique des mots de passe.
+ * Permet de vérifier qu'on ne réutilise pas un vieux mot de passe.
+ */
 class Password
 {
     #[ORM\Id]

@@ -16,6 +16,10 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
+/**
+ * L'authentificateur pour le formulaire de login.
+ * C'est lui qui vérifie si l'email et le mot de passe correspondent.
+ */
 class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
@@ -26,15 +30,19 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     {
     }
 
+    /**
+     * Récupère les données du formulaire de connexion.
+     * Email, mot de passe, et le jeton CSRF pour la sécurité.
+     */
     public function authenticate(Request $request): Passport
     {
-        $email = $request->getPayload()->getString('email');
+        $email = $request->getPayload()->getString('_username');
 
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
 
         return new Passport(
             new UserBadge($email),
-            new PasswordCredentials($request->getPayload()->getString('password')),
+            new PasswordCredentials($request->getPayload()->getString('_password')),
             [
                 new CsrfTokenBadge('authenticate', $request->getPayload()->getString('_csrf_token')),
                 new RememberMeBadge(),
@@ -42,6 +50,10 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         );
     }
 
+    /**
+     * Ce qu'on fait quand la connexion réussit.
+     * On redirige l'utilisateur vers la page qu'il voulait voir, ou vers l'accueil.
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {

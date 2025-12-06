@@ -1,0 +1,239 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ classroom.name }}{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb" class="app-breadcrumb">
+        <ol class="app-breadcrumb__list">
+            <li class="app-breadcrumb__item">
+                <a href="{{ path('app_classroom_index') }}" class="app-breadcrumb__link">{{ is_granted('ROLE_ADMIN') ? 'Classes' : 'Mes Classes' }}</a>
+            </li>
+            <li class="app-breadcrumb__item app-breadcrumb__item--active" aria-current="page">
+                {{ classroom.name }}
+            </li>
+        </ol>
+    </nav>
+<div class="page-wrapper">
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">{{ classroom.name }}</h1>
+        </div>
+        
+        {% if app.user == classroom.teacher %}
+            <div class="page-header__actions">
+                <!-- Invite Trigger -->
+                <button class="app-btn app-btn--primary" onclick="openModal('inviteModal')">
+                    Inviter à rejoindre
+                </button>
+                <button class="app-btn app-btn--primary btn-warning" onclick="openModal('editModal')">
+                    Modifier
+                </button>
+                <button class="app-btn app-btn--primary btn-success" onclick="openModal('createAssignmentModal')">
+                    Nouveau devoir
+                </button>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'assignments')">Devoirs</button>
+        <button class="tab-btn" onclick="openTab(event, 'members')">Membres</button>
+    </div>
+
+    <!-- Assignments Tab -->
+    <div id="assignments" class="tab-panel active">
+        {% if classroom.assignments is empty %}
+            <div class="empty-state">
+                Aucun devoir pour le moment.
+            </div>
+        {% else %}
+            <div class="resource-grid">
+                {% for assignment in classroom.assignments %}
+                    <div class="resource-card">
+                        <h5 class="resource-card__title text-brand">
+                            {{ assignment.title }}
+                        </h5>
+                        <p class="resource-card__content">
+                            {{ assignment.description|length > 100 ? assignment.description|slice(0, 100) ~ '...' : assignment.description }}
+                        </p>
+                        <div class="resource-card__footer">
+                            <small class="text-muted-sm">
+                                {{ assignment.dueDate ? assignment.dueDate|date('d/m/Y') : 'Aucune date' }}
+                            </small>
+                            <a href="{{ path('app_assignment_show', {'id': assignment.id}) }}" class="app-btn app-btn--primary app-btn-sm">
+                                Voir
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Members Tab -->
+    <div id="members" class="tab-panel">
+        <div class="resource-grid">
+            <!-- Teacher -->
+            <div class="resource-card">
+                <h5 class="resource-card__title text-brand">Enseignant</h5>
+                <div class="field-group">
+                    <span class="d-block fw-bold">{{ classroom.teacher.firstName }} {{ classroom.teacher.lastName }}</span>
+                    <small class="text-muted">{{ classroom.teacher.email }}</small>
+                </div>
+            </div>
+
+            <!-- Students -->
+            {% for student in classroom.students %}
+                <div class="resource-card">
+                     <h5 class="resource-card__title text-success">Élève</h5>
+                     <div class="field-group mb-sm">
+                        <span class="d-block fw-bold">{{ student.firstName }} {{ student.lastName }}</span>
+                        <small class="text-muted">{{ student.email }}</small>
+                    </div>
+                    
+                    {% if app.user == classroom.teacher %}
+                        <div class="resource-card__footer">
+                            <form action="{{ path('app_classroom_remove_student', {'id': classroom.id, 'student_id': student.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir retirer cet élève de la classe ?');" class="w-100">
+                                <input type="hidden" name="_token" value="{{ csrf_token('remove_student' ~ student.id) }}">
+                                <button type="submit" class="app-btn app-btn--danger app-btn-sm w-100" title="Retirer de la classe">
+                                    Retirer
+                                </button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="my-lg">
+        <a href="{{ path('app_classroom_index') }}" class="back-link back-link--center">{{ is_granted('ROLE_ADMIN') ? 'Retour aux classes' : 'Retour à mes classes' }}</a>
+    </div>
+
+    <!-- Invite Modal -->
+    <div id="inviteModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Inviter un élève</h3>
+                <button class="modal-close" onclick="closeModal('inviteModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="field-group">
+                    <label for="invite-email-input" class="form-label">Adresse Email de l'élève</label>
+                    <input type="email" class="form-input" id="invite-email-input" placeholder="eleve@ecole.fr">
+                </div>
+                <div class="field-group">
+                    <button class="app-btn app-btn--primary w-100" onclick="sendInvite()">Envoyer l'invitation</button>
+                </div>
+                <div id="invite-feedback" class="mt-4"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Edit Modal (Only for teacher) -->
+    {% if editForm %}
+        <div id="editModal" class="modal-overlay">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 class="modal-title">Modifier la classe</h3>
+                    <button class="modal-close" onclick="closeModal('editModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                     {{ form_start(editForm) }}
+                        <div class="field-group">
+                            {{ form_row(editForm.name, {'attr': {'class': 'form-input'}}) }}
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="app-btn app-btn--primary btn-full">Enregistrer les modifications</button>
+                        </div>
+                    {{ form_end(editForm) }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if assignmentForm %}
+        <div id="createAssignmentModal" class="modal-overlay">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 class="modal-title">Créer un nouveau devoir</h3>
+                    <button class="modal-close" onclick="closeModal('createAssignmentModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                     {{ form_start(assignmentForm, {'attr': {'enctype': 'multipart/form-data'}}) }}
+                        <div class="field-group">
+                            {{ form_row(assignmentForm.title, {'attr': {'class': 'form-input'}}) }}
+                        </div>
+                        <div class="field-group">
+                            {{ form_row(assignmentForm.description, {'attr': {'class': 'form-input', 'rows': '5'}}) }}
+                        </div>
+                        <div class="field-group">
+                            {{ form_row(assignmentForm.dueDate, {'attr': {'class': 'form-input'}}) }}
+                        </div>
+                        <div class="field-group">
+                             {{ form_row(assignmentForm.attachmentFiles, {'attr': {'class': 'form-input'}}) }}
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="app-btn app-btn--primary">Créer le devoir</button>
+                        </div>
+                    {{ form_end(assignmentForm) }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+    <script>
+        // Tabs Logic
+        function openTab(evt, tabName) {
+            var i, tabContent, tabLinks;
+            tabContent = document.getElementsByClassName("tab-panel");
+            for (i = 0; i < tabContent.length; i++) {
+                tabContent[i].classList.remove("active");
+            }
+            tabLinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tabLinks.length; i++) {
+                tabLinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Invite Logic
+        function sendInvite() {
+            const email = document.getElementById('invite-email-input').value;
+            const feedback = document.getElementById('invite-feedback');
+            
+            if(!email) {
+                feedback.innerHTML = `<div class="text-danger">Veuillez entrer une adresse email.</div>`;
+                return;
+            }
+
+            // Show loading state
+            feedback.innerHTML = `<div class="text-muted">Envoi en cours...</div>`;
+
+            fetch('{{ path('app_classroom_invite_email', {'id': classroom.id}) }}', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    feedback.innerHTML = `<div class="text-success">${data.message}</div>`;
+                    document.getElementById('invite-email-input').value = '';
+                    setTimeout(() => closeModal('inviteModal'), 2000);
+                } else {
+                    feedback.innerHTML = `<div class="text-danger">${data.error}</div>`;
+                }
+            })
+            .catch(error => {
+                feedback.innerHTML = `<div class="text-danger">Une erreur est survenue.</div>`;
+            });
+        }
+    </script>
+</div>
+{% endblock %}

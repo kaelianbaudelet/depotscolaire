@@ -16,6 +16,10 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use Symfony\Component\Validator\Constraints\Regex;
 
+/**
+ * Le gros formulaire d'inscription.
+ * On demande tout : nom, prénom, adresse... et le mot de passe (bien sécurisé bien sûr).
+ */
 class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -72,8 +76,8 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
+                // Au lieu d'être lié directement à l'entité,
+                // ce champ est lu et encodé dans le contrôleur.
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
