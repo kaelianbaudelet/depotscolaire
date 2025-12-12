@@ -70,4 +70,137 @@
         </p>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form[name="registration_form"]');
+    if (!form) return;
+
+    const inputs = form.querySelectorAll('input');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    // Disable submit initially
+    submitBtn.disabled = true;
+    submitBtn.classList.add('btn-disabled');
+
+    // Validation patterns
+    const patterns = {
+        email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/
+    };
+
+    const messages = {
+        required: "Ce champ est obligatoire.",
+        email: "Veuillez entrer une adresse email valide.",
+        password: "Le mot de passe doit contenir au moins 12 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.",
+        agree: "Vous devez accepter les conditions."
+    };
+
+    function validateInput(input) {
+        let isValid = true;
+        let errorMessage = "";
+        const parent = input.closest('.field-group') || input.parentElement;
+        
+        // Remove existing error
+        const existingError = parent.querySelector('.error-message');
+        if (existingError) existingError.remove();
+        input.classList.remove('input-error');
+
+        // Check required
+        if (input.required && !input.value.trim()) {
+            isValid = false;
+            errorMessage = messages.required;
+        }
+        
+        // Check checkbox
+        if (input.type === 'checkbox' && input.required && !input.checked) {
+             isValid = false;
+             errorMessage = messages.agree;
+        }
+
+        // Check email
+        if (isValid && input.type === 'email' && input.value.trim() && !patterns.email.test(input.value)) {
+            isValid = false;
+            errorMessage = messages.email;
+        }
+
+        // Check password (only if it's the main password field, usually 'plainPassword')
+        if (isValid && input.type === 'password' && input.id.includes('plainPassword') && input.value) {
+            if (!patterns.password.test(input.value)) {
+                isValid = false;
+                errorMessage = messages.password;
+            }
+        }
+
+        if (!isValid) {
+            input.classList.add('input-error');
+            const errorDiv = document.createElement('small');
+            errorDiv.className = 'error-message';
+            errorDiv.innerText = errorMessage;
+            parent.appendChild(errorDiv);
+        }
+
+        return isValid;
+    }
+
+    function checkFormValidity() {
+        let isFormValid = true;
+        inputs.forEach(input => {
+            // Start validation only after user interaction or if it's already filled (browser autofill)
+            // But for the button state, we check everything. 
+            // We just don't show red errors for untouched fields unless specific logic.
+            // For simplicity, let's validate logic but only show error if 'touched' or 'dirty'.
+            // Here we just check valid property of HTML5 + our custom logic logic.
+            
+            // To be robust: re-run validateInput but suppress visual error if not touched? 
+            // Let's rely on the fact that we ran validateInput on 'input' event.
+            // But we need to check ALL inputs for the button state.
+            
+            // Simple approach: Check internal validity without showing error if not dirty
+            // But validateInput DOES show error. 
+            
+            // Let's just loop and check validity logic without DOM manipulation for the button?
+            // No, let's rely on the DOM state. 
+            // We need to know if there are any errors shown OR if any required field is empty.
+        });
+
+        // Better approach for button:
+        // Check if there are any .input-error OR if any required field is empty.
+        const hasErrors = form.querySelectorAll('.input-error').length > 0;
+        let allRequiredFilled = true;
+        
+        inputs.forEach(inp => {
+            if (inp.required) {
+                if (inp.type === 'checkbox') {
+                    if (!inp.checked) allRequiredFilled = false;
+                } else {
+                    if (!inp.value.trim()) allRequiredFilled = false;
+                }
+            }
+        });
+
+        if (!hasErrors && allRequiredFilled) {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('btn-disabled');
+        } else {
+            submitBtn.disabled = true;
+            submitBtn.classList.add('btn-disabled');
+        }
+    }
+
+    inputs.forEach(input => {
+        // Validate on input/change
+        input.addEventListener('input', function() {
+            validateInput(input);
+            checkFormValidity();
+        });
+        
+        // Also validate on blur to show error if user leaves field empty
+        input.addEventListener('blur', function() {
+            validateInput(input);
+            checkFormValidity();
+        });
+    });
+});
+</script>
 {% endblock %}

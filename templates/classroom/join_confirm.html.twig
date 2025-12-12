@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Invitation à rejoindre une classe{% endblock %}
+
+{% block body %}
+<div class="page-wrapper">
+    <div class="auth-card" style="margin: 4rem auto; max-width: 500px; text-align: center;">
+        <h1 class="auth-header mb-md">Invitation de classe</h1>
+        
+        <div class="mb-lg">
+            <p class="text-muted mb-sm">Le professeur <strong>{{ classroom.teacher.firstName }} {{ classroom.teacher.lastName }}</strong> vous invite à rejoindre la classe :</p>
+            <h2 class="text-primary mb-md" style="font-size: 2rem;">{{ classroom.name }}</h2>
+        </div>
+
+        <div class="alert alert-info mb-lg">
+            En rejoignant cette classe, vous pourrez accéder aux devoirs et soumettre vos travaux.
+        </div>
+
+        <form method="post" action="{{ app.request.uri }}">
+            <div class="form-actions" style="display: flex; gap: 1rem; justify-content: center;">
+                <a href="{{ path('app_classroom_index') }}" class="app-btn app-btn--outline">Refuser</a>
+                <button type="submit" class="app-btn app-btn--primary">Accepter et Rejoindre</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

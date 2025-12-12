@@ -17,6 +17,12 @@
     <div class="page-header">
         <div>
             <h1 class="page-header__title">{{ classroom.name }}</h1>
+             {% if stats %}
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <span class="badge badge--info">{{ stats.studentCount }} Élèves</span>
+                    <span class="badge badge--primary">{{ stats.assignmentCount }} Devoirs</span>
+                </div>
+            {% endif %}
         </div>
         
         {% if app.user == classroom.teacher or is_granted('ROLE_ADMIN') %}
@@ -150,11 +156,18 @@
                             
                             <hr class="app-divider">
                             
-                            <button type="button" class="app-btn app-btn--danger app-btn--outline btn-full" onclick="confirmDeleteClass()">
-                                Supprimer la classe
-                            </button>
+
                         </div>
                     {{ form_end(editForm) }}
+
+                    <div class="mt-4 border-top pt-3">
+                         <form action="{{ path('app_classroom_delete', {'id': classroom.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette classe ? Cette action est irréversible et effacera tous les devoirs et données associés.');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ classroom.id) }}">
+                             <button type="submit" class="app-btn app-btn--danger app-btn--outline btn-full">
+                                Supprimer la classe
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -191,27 +204,7 @@
         </div>
     {% endif %}
 
-    <!-- Delete Confirmation Modal -->
-    <div id="deleteConfirmModal" class="modal-overlay">
-        <div class="modal">
-            <div class="modal-header">
-                <h3 class="modal-title text-danger">Supprimer la classe ?</h3>
-                <button class="modal-close" onclick="closeModal('deleteConfirmModal')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p>Attention, cette action est <strong>irréversible</strong>.</p>
-                <p>Tous les devoirs, les rendus des élèves et l'historique de cette classe seront définitivement effacés.</p>
-                
-                <form action="{{ path('app_classroom_delete', {'id': classroom.id}) }}" method="post" class="mt-4">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ classroom.id) }}">
-                    <div class="form-actions">
-                        <button type="button" class="app-btn app-btn--outline" onclick="closeModal('deleteConfirmModal')">Annuler</button>
-                        <button type="submit" class="app-btn app-btn--danger">Confirmer la suppression</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+
 
 
     <script>
@@ -263,11 +256,7 @@
             });
         }
 
-        // Delete Confirmation Logic
-        function confirmDeleteClass() {
-            closeModal('editModal');
-            openModal('deleteConfirmModal');
-        }
+
     </script>
 </div>
 {% endblock %}

@@ -9,15 +9,48 @@
         <!-- Tabs Navigation -->
         <div class="tabs">
             <button class="tab-btn active" onclick="openTab(event, 'users')">Utilisateurs</button>
-            <button class="tab-btn" onclick="openTab(event, 'logs')">Journaux de Connexion</button>
+            <button class="tab-btn" onclick="openTab(event, 'stats')">Statistiques</button>
+            <button class="tab-btn" onclick="openTab(event, 'logs')">Journaux</button>
+        </div>
+
+        <!-- STATISTICS TAB -->
+        <div id="stats" class="tab-panel">
+            <h3 class="mb-md">Vue d'ensemble</h3>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">{{ admin_stats.new_users_month }}</div>
+                    <div class="stat-label">Inscrits ce mois</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ admin_stats.total_students }}</div>
+                    <div class="stat-label">Élèves</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ admin_stats.total_teachers }}</div>
+                    <div class="stat-label">Professeurs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ admin_stats.total_assignments }}</div>
+                    <div class="stat-label">Devoirs Créés</div>
+                </div>
+            </div>
+
+            <h4 class="text-brand mb-sm mt-lg">Derniers Inscrits</h4>
+            <div class="latest-users-grid">
+                {% for latest in latest_users %}
+                    <div class="user-card-mini">
+                        <span class="user-card-mini__email" title="{{ latest.email }}">{{ latest.email }}</span>
+                        <div class="user-card-mini__date">{{ latest.createdAt|date('d/m/Y') }}</div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
 
         <!-- Users Tab -->
         <div id="users" class="tab-panel active">
             <div class="resource-card">
                 
-                <!-- Header removed as per request -->
-
                 <div class="table-wrapper">
                     <table class="data-table">
                         <thead>
@@ -39,9 +72,9 @@
                                         {% if 'ROLE_ADMIN' in user.roles %}
                                             <span class="admin-badge admin-badge--admin">ADMIN</span>
                                         {% elseif 'ROLE_TEACHER' in user.roles %}
-                                            <span class="admin-badge admin-badge--mod">MOD</span>
+                                            <span class="admin-badge admin-badge--teacher">PROFESSEUR</span>
                                         {% else %}
-                                            USER
+                                            <span class="admin-badge admin-badge--active">ÉTUDIANT</span>
                                         {% endif %}
                                     </td>
                                     <td>
@@ -138,8 +171,8 @@
         <div id="logs" class="tab-panel">
             <div class="resource-card">
                 <h3 class="mb-md">Historique des connexions</h3>
-                <div class="table-wrapper">
-                    <table class="data-table">
+                <div class="table-wrapper" style="width: 100%; overflow-x: auto; max-width: 100%;">
+                    <table class="data-table" style="width: 100%;">
                         <thead>
                             <tr>
                                 <th>Date</th>

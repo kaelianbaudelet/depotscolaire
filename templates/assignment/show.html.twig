@@ -47,13 +47,67 @@
         {% endif %}
     </div>
 
+    {% if is_granted('ROLE_TEACHER') and app.user == assignment.classroom.teacher %}
+        <div class="mt-lg">
+            <h4 class="mb-sm">Travaux rendus ({{ assignment.submissions|length }})</h4>
+            {% if assignment.submissions is not empty %}
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Élève</th>
+                                <th>Date de rendu</th>
+                                <th>Fichiers</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for submission in assignment.submissions %}
+                                <tr>
+                                    <td>{{ submission.student.firstName }} {{ submission.student.lastName }}</td>
+                                    <td>{{ submission.submittedAt|date('d/m/Y H:i') }}</td>
+                                    <td>
+                                        <ul class="attachment-list" style="margin: 0;">
+                                            {% for file in submission.files %}
+                                                <li>
+                                                    <a href="{{ asset('uploads/submissions/' ~ file) }}" target="_blank" class="attachment-link">
+                                                        📄 {{ file }}
+                                                    </a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        {% if submission.isLate %}
+                                            <span class="badge badge--danger">En retard</span>
+                                        {% else %}
+                                            <span class="badge badge--success">À l'heure</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="resource-card">
+                    <p class="text-muted mb-0">Aucun élève n'a encore rendu son devoir.</p>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
     {% if is_granted('ROLE_STUDENT') %}
         <div class="mt-lg">
             <h4 class="mb-sm">Mon travail</h4>
             
             {% if submission %}
                  <div class="resource-card bg-light">
-                    <h5 class="text-success mb-sm"><i class="bi bi-check-circle-fill"></i> Devoir rendu</h5>
+                    {% if submission.isLate %}
+                        <h5 class="text-danger mb-sm">⚠️ Devoir rendu en retard</h5>
+                    {% else %}
+                        <h5 class="text-success mb-sm">✅ Devoir rendu</h5>
+                    {% endif %}
                     <p class="mb-sm">Remis le : <strong>{{ submission.submittedAt|date('d/m/Y à H:i') }}</strong></p>
                     
                     {% if submission.files %}
@@ -101,7 +155,7 @@
         </div>
     {% endif %}
 </div>
-    <!-- Edit Modal (Only for teacher) -->
+    <!-- Modal d'edition (uniquement pour le professeur) -->
     {% if editForm %}
         <div id="editModal" class="modal-overlay">
             <div class="modal">
@@ -136,13 +190,6 @@
             </div>
         </div>
     {% endif %}
-
-    {% block stylesheets %}
-        {{ parent() }}
-        <style>
-            /* Temporaire : Styles pour la modal */
-        </style>
-    {% endblock %}
 
     {% block javascripts %}
         {{ parent() }}

@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends app.user ? 'base.html.twig' : 'base_landing.html.twig' %}
 {% block title %}
 	{{parent()}}Accueil
 {% endblock %}
@@ -6,15 +6,39 @@
     {% if not app.user %}
         {# --- PUBLIC LANDING PAGE --- #}
         <section class="hero-section">
-            <div class="hero-content">
-                <h1 class="hero-title">Plateforme de Dépôt de Devoirs et de Projets scolaires</h1>
-                <p class="hero-subtitle">
-                    La solution dédiée exclusivement au dépôt des rendus étudiants.
-                    Simplifiez la collecte de vos livrables projets et devoirs.
-                </p>
-                <div class="hero-actions">
-                    <a href="{{ path('app_register') }}" class="app-btn app-btn--primary app-btn--lg">S'inscire dès maintenant</a>
-                    <a href="{{ path('app_login') }}" class="app-btn app-btn--outline app-btn--lg">Se connecter</a>
+            <div class="app-container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Plateforme de Dépôt de Devoirs et de Projets scolaires</h1>
+                    <p class="hero-subtitle">
+                        La solution dédiée exclusivement au dépôt des rendus étudiants.
+                        Simplifiez la collecte de vos livrables projets et devoirs.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="{{ path('app_register') }}" class="app-btn app-btn--primary app-btn--lg">S'inscire dès maintenant</a>
+                        <a href="{{ path('app_login') }}" class="app-btn app-btn--outline app-btn--lg">Se connecter</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {# --- STATS SECTION --- #}
+        <section class="page-section bg-white">
+            <div class="app-container">
+                <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); margin-bottom: 0;">
+                    <div class="stat-card">
+                        <div class="stat-value">{{ teacher_count }}</div>
+                        <div class="stat-label">Professeurs Inscrits</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-value">{{ student_count }}</div>
+                        <div class="stat-label">Élèves Inscrits</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-value">{{ assignment_count }}</div>
+                        <div class="stat-label">Devoirs Partagés</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -24,17 +48,32 @@
                 <h2 class="section-title text-center">Centralisez vos Rendus Scolaires</h2>
                 <div class="features-grid">
                     <div class="feature-card">
-                        <div class="feature-icon">📂</div>
+                        <div class="feature-icon">
+                            <svg width="40px" height="40px" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M2.06935 5.25839C2 5.62595 2 6.06722 2 6.94975V9.25H21.9531C21.8809 8.20117 21.6973 7.51276 21.2305 6.99383C21.1598 6.91514 21.0849 6.84024 21.0062 6.76946C20.1506 6 18.8345 6 16.2021 6H15.8284C14.6747 6 14.0979 6 13.5604 5.84678C13.2651 5.7626 12.9804 5.64471 12.7121 5.49543C12.2237 5.22367 11.8158 4.81578 11 4L10.4497 3.44975C10.1763 3.17633 10.0396 3.03961 9.89594 2.92051C9.27652 2.40704 8.51665 2.09229 7.71557 2.01738C7.52976 2 7.33642 2 6.94975 2C6.06722 2 5.62595 2 5.25839 2.06935C3.64031 2.37464 2.37464 3.64031 2.06935 5.25839ZM21.9978 10.75H2V14C2 17.7712 2 19.6569 3.17157 20.8284C4.34315 22 6.22876 22 10 22H14C17.7712 22 19.6569 22 20.8284 20.8284C22 19.6569 22 17.7712 22 14V11.7979C22 11.4227 21.9978 10.75 21.9978 10.75Z" fill="currentColor"/>
+                            </svg>
+                        </div>
                         <h3 class="feature-title">Dépôt de Projets</h3>
                         <p class="feature-desc">Un espace sécurisé pour que les étudiants soumettent leurs fichiers.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">📈</div>
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="40px" height="40px">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M2.54497 8.73005C2 9.79961 2 11.1997 2 14C2 16.8003 2 18.2004 2.54497 19.27C3.02433 20.2108 3.78924 20.9757 4.73005 21.455C5.79961 22 7.19974 22 10 22H14C16.8003 22 18.2004 22 19.27 21.455C20.2108 20.9757 20.9757 20.2108 21.455 19.27C22 18.2004 22 16.8003 22 14C22 11.1997 22 9.79961 21.455 8.73005C20.9757 7.78924 20.2108 7.02433 19.27 6.54497C18.2004 6 16.8003 6 14 6H10C7.19974 6 5.79961 6 4.73005 6.54497C3.78924 7.02433 3.02433 7.78924 2.54497 8.73005ZM15.0595 12.4995C15.3353 12.1905 15.3085 11.7164 14.9995 11.4406C14.6905 11.1647 14.2164 11.1915 13.9406 11.5005L10.9286 14.8739L10.0595 13.9005C9.78359 13.5915 9.30947 13.5647 9.0005 13.8406C8.69152 14.1164 8.66468 14.5905 8.94055 14.8995L10.3691 16.4995C10.5114 16.6589 10.7149 16.75 10.9286 16.75C11.1422 16.75 11.3457 16.6589 11.488 16.4995L15.0595 12.4995Z" fill="currentColor"/>
+                                <path d="M20.5348 3.46447C19.0704 2 16.7133 2 11.9993 2C7.28525 2 4.92823 2 3.46377 3.46447C2.70628 4.22195 2.3406 5.21824 2.16406 6.65598C2.69473 6.06532 3.33236 5.57328 4.04836 5.20846C4.82984 4.81027 5.66664 4.6488 6.59316 4.5731C7.48829 4.49997 8.58971 4.49998 9.93646 4.5H14.0621C15.4089 4.49998 16.5103 4.49997 17.4054 4.5731C18.332 4.6488 19.1688 4.81027 19.9502 5.20846C20.6662 5.57328 21.3039 6.06532 21.8345 6.65598C21.658 5.21824 21.2923 4.22195 20.5348 3.46447Z" fill="currentColor"/>
+                            </svg>
+                        </div>
                         <h3 class="feature-title">Suivi des Rendus</h3>
                         <p class="feature-desc">Visualisez l'état des soumissions de vos étudiants en un coup d'oeil.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">📝</div>
+                        <div class="feature-icon">
+                            
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="40px" height="40px">
+                                <path d="M2 5C2 4.05719 2 3.58579 2.29289 3.29289C2.58579 3 3.05719 3 4 3H20C20.9428 3 21.4142 3 21.7071 3.29289C22 3.58579 22 4.05719 22 5C22 5.94281 22 6.41421 21.7071 6.70711C21.4142 7 20.9428 7 20 7H4C3.05719 7 2.58579 7 2.29289 6.70711C2 6.41421 2 5.94281 2 5Z" fill="currentColor"/>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M20.0689 8.49993C20.2101 8.49999 20.3551 8.50005 20.5 8.49805V12.9999C20.5 16.7711 20.5 18.6568 19.3284 19.8283C18.1569 20.9999 16.2712 20.9999 12.5 20.9999H11.5C7.72876 20.9999 5.84315 20.9999 4.67157 19.8283C3.5 18.6568 3.5 16.7711 3.5 12.9999V8.49805C3.64488 8.50005 3.78999 8.49999 3.93114 8.49993H20.0689ZM9 11.9999C9 11.5339 9 11.301 9.07612 11.1172C9.17761 10.8722 9.37229 10.6775 9.61732 10.576C9.80109 10.4999 10.0341 10.4999 10.5 10.4999H13.5C13.9659 10.4999 14.1989 10.4999 14.3827 10.576C14.6277 10.6775 14.8224 10.8722 14.9239 11.1172C15 11.301 15 11.5339 15 11.9999C15 12.4658 15 12.6988 14.9239 12.8826C14.8224 13.1276 14.6277 13.3223 14.3827 13.4238C14.1989 13.4999 13.9659 13.4999 13.5 13.4999H10.5C10.0341 13.4999 9.80109 13.4999 9.61732 13.4238C9.37229 13.3223 9.17761 13.1276 9.07612 12.8826C9 12.6988 9 12.4658 9 11.9999Z" fill="currentColor"/>
+                            </svg>
+                        </div>
                         <h3 class="feature-title">Création de Devoirs</h3>
                         <p class="feature-desc">Les enseignants peuvent créer et configurer des devoirs facilement.</p>
                     </div>
@@ -44,10 +83,12 @@
         </section>
 
         <section class="cta-section">
-            <div class="cta-content">
-                <h2>Optimisez la gestion de vos évaluations</h2>
-                <p>Ne perdez plus jamais un mail avec une pièce jointe. Tout est ici.</p>
-                <a href="{{ path('app_register') }}" class="app-btn app-btn--white app-btn--lg">Créer un espace de dépôt</a>
+            <div class="app-container">
+                <div class="cta-content">
+                    <h2>Optimisez la gestion de vos évaluations</h2>
+                    <p>Ne perdez plus jamais un mail avec une pièce jointe. Tout est ici.</p>
+                    <a href="{{ path('app_register') }}" class="app-btn app-btn--white app-btn--lg">Créer un espace de dépôt</a>
+                </div>
             </div>
         </section>
 

@@ -176,8 +176,8 @@ class AssignmentController extends AbstractController
                 $submission = $existingSubmission;
             } else {
                  // Sinon, on prépare le formulaire pour rendre le devoir
-                 $submission = new Submission();
-                 $submissionForm = $this->createForm(SubmissionType::class, $submission);
+                 $newSubmission = new Submission();
+                 $submissionForm = $this->createForm(SubmissionType::class, $newSubmission);
                  $submissionForm->handleRequest($request);
 
                  if ($submissionForm->isSubmitted() && $submissionForm->isValid()) {
@@ -204,12 +204,12 @@ class AssignmentController extends AbstractController
                              }
                         }
 
-                        $submission->setFiles($submittedFiles); 
-                        $submission->setStudent($user);
-                        $submission->setAssignment($assignment);
-                        $submission->setSubmittedAt(new \DateTimeImmutable());
+                        $newSubmission->setFiles($submittedFiles); 
+                        $newSubmission->setStudent($user);
+                        $newSubmission->setAssignment($assignment);
+                        $newSubmission->setSubmittedAt(new \DateTimeImmutable());
 
-                        $entityManager->persist($submission);
+                        $entityManager->persist($newSubmission);
                         $entityManager->flush();
 
                         $this->addFlash('success', 'Bravo ! Votre devoir a été rendu avec succès.');

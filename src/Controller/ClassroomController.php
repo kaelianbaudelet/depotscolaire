@@ -96,7 +96,7 @@ class ClassroomController extends AbstractController
     /**
      * Permet à un élève de rejoindre une classe via un lien signé.
      */
-    #[Route('/{id}/join', name: 'app_classroom_join', methods: ['GET'])]
+    #[Route('/{id}/join', name: 'app_classroom_join', methods: ['GET', 'POST'])]
     public function join(Request $request, Classroom $classroom, EntityManagerInterface $entityManager): Response
     {
         // 1. Vérifier la signature de l'URL
@@ -116,17 +116,25 @@ class ClassroomController extends AbstractController
 
         // 3. Vérifier si l'utilisateur est déjà dans la classe ou est le prof
         if ($classroom->getTeacher() === $user || $classroom->getStudents()->contains($user)) {
+             // Si déjà dedans, on redirige direct sans confirmation (UX fluide)
             $this->addFlash('info', 'Vous êtes déjà membre de cette classe.');
             return $this->redirectToRoute('app_classroom_show', ['id' => $classroom->getId()]);
         }
 
-        // 4. Ajouter l'élève
-        $classroom->addStudent($user);
-        $entityManager->flush();
+        // 4. Confirmation (GET = Afficher page, POST = Valider)
+        if ($request->isMethod('POST')) {
+            // Ajouter l'élève
+            $classroom->addStudent($user);
+            $entityManager->flush();
 
-        $this->addFlash('success', 'Bienvenue ! Vous avez rejoint la classe ' . $classroom->getName() . '.');
+            $this->addFlash('success', 'Bienvenue ! Vous avez rejoint la classe ' . $classroom->getName() . '.');
+            return $this->redirectToRoute('app_classroom_show', ['id' => $classroom->getId()]);
+        }
 
-        return $this->redirectToRoute('app_classroom_show', ['id' => $classroom->getId()]);
+        // Afficher la page de confirmation
+        return $this->render('classroom/join_confirm.html.twig', [
+            'classroom' => $classroom,
+        ]);
     }
 
     /**
@@ -210,7 +218,7 @@ class ClassroomController extends AbstractController
      * C'est là qu'on voit les devoirs, les élèves, et le QR Code pour inviter.
      */
     #[Route('/{id}', name: 'app_classroom_show', methods: ['GET'])]
-    public function show(Classroom $classroom, Request $request): Response
+    public function show(Classroom $classroom, Request $request, EntityManagerInterface $entityManager): Response
     {
         // Vérification d'accès : il faut être soit le prof soit un élève de la classe, OU ADMIN
         $user = $this->getUser();
@@ -239,6 +247,7 @@ class ClassroomController extends AbstractController
             'classroom' => $classroom,
             'editForm' => $editForm ? $editForm->createView() : null,
             'assignmentForm' => $assignmentForm ? $assignmentForm->createView() : null,
+            'stats' => $this->isGranted('ROLE_TEACHER') ? $entityManager->getRepository(Classroom::class)->getClassroomStats($classroom->getId()) : null,
         ]);
     }
 

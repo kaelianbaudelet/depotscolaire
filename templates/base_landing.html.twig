@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>
+			{% block title %}Dépôt Scolaire{% endblock %}
+		</title>
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
+	</head>
+	<body>
+		{{ include('components/_header_landing.html.twig') }}
+
+		<main>
+			{% block flash_messages %}
+				<div class="app-container">
+					{{ include('components/_flash_messages.html.twig') }}
+				</div>
+			{% endblock %}
+			
+			{% block body %}Base{% endblock %}
+		</main>
+
+		<footer class="app-footer">
+			<div class="app-container">
+				<p class="app-footer__text">
+					&copy; {{ 'now'|date('Y') }} Dépôt Scolaire. Tous droits réservés.
+				</p>
+			</div>
+		</footer>
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
+	</body>
+</html>

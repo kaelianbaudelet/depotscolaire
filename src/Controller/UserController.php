@@ -17,7 +17,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 /**
  * Contrôleur de gestion des utilisateurs (partie Admin).
  * Ici, on a les pleins pouvoirs : voir tout le monde, modifier les profils...
- * À utiliser avec sagesse !
  */
 final class UserController extends AbstractController
 {
@@ -26,7 +25,12 @@ final class UserController extends AbstractController
      * Une vue d'ensemble pour savoir ce qui se passe sur le site.
      */
     #[Route('/adm-administration', name: 'app_users_list')] 
-    public function users_list(UserRepository $userRepository, LogsRepository $logsRepository, FormFactoryInterface $formFactory): Response
+    public function users_list(
+        UserRepository $userRepository, 
+        LogsRepository $logsRepository, 
+        \App\Repository\AssignmentRepository $assignmentRepository,
+        FormFactoryInterface $formFactory
+    ): Response
     {
         $users = $userRepository->findAll();
         $logs = $logsRepository->findAll();
@@ -45,10 +49,31 @@ final class UserController extends AbstractController
             $forms[$user->getId()] = $form->createView();
         }
 
+        // --- Statistiques Admin ---
+        // --- Statistiques Admin ---
+        $totalTeachers = $userRepository->countUsersByRole('ROLE_TEACHER');
+        $totalAdmins = $userRepository->countUsersByRole('ROLE_ADMIN');
+        $totalUsers = $userRepository->countAllUsers();
+        
+        // Calcul plus sûr pour les élèves : Total - Profs - Admins
+        // (En supposant que chaque utilisateur est unique et que ceux qui ne sont ni prof ni admin sont élèves)
+        $totalStudents = $totalUsers - $totalTeachers - $totalAdmins;
+        if ($totalStudents < 0) $totalStudents = 0; // Sécurité
+
+        $adminStats = [
+            'total_teachers' => $totalTeachers,
+            'total_students' => $totalStudents, 
+            'new_users_month' => $userRepository->countNewUsersThisMonth(),
+            'total_assignments' => $assignmentRepository->countTotalAssignments(),
+            'total_submissions' => $assignmentRepository->countTotalSubmissions(),
+        ];
+
         return $this->render('admin/users_list.html.twig', [
             'users' => $users,
             'logs' => $logs,
             'forms' => $forms,
+            'latest_users' => $userRepository->findLatestUsers(5),
+            'admin_stats' => $adminStats,
         ]);
     }
 
