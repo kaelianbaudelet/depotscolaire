@@ -51,17 +51,15 @@ services:
     volumes:
       - db_data:/var/lib/mysql
 
-  adminer:
-    image: adminer:latest
-    container_name: ${COMPOSE_PROJECT_NAME:-symfony}_adminer
-    hostname: adminer
+  dbgate:
+    image: dbgate/dbgate:latest
+    container_name: ${COMPOSE_PROJECT_NAME:-symfony}_dbgate
+    hostname: dbgate
     restart: unless-stopped
     depends_on:
       - db
-    environment:
-      ADMINER_DEFAULT_SERVER: db
     ports:
-      - "8081:8080"
+      - "8081:3000"
 
   mailpit:
     image: axllent/mailpit:latest
