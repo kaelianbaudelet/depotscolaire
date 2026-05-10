@@ -61,7 +61,15 @@ services:
     ports:
       - "8081:3000"
     environment:
-      CONNECTIONS: MySQL,mysql,db,symfony,symfony,symfony
+      - CONNECTIONS=main
+      - LABEL_main=DépôtScolaire
+      - SERVER_main=db
+      - USER_main=symfony
+      - PASSWORD_main=symfony
+      - DATABASE_main=symfony
+      - ENGINE_main=mariadb@dbgate-plugin-mysql
+      - SINGLE_CONNECTION=main
+      - SINGLE_DATABASE=symfony
 
   mailpit:
     image: axllent/mailpit:latest

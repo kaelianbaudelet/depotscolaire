@@ -63,7 +63,15 @@ services:
     environment:
       - LOGIN=${DBGATE_LOGIN:-admin}
       - PASSWORD=${DBGATE_PASSWORD:-admin_password}
-      - CONNECTIONS=MySQL,mysql,db,symfony,${MARIADB_PASSWORD:-symfony},symfony
+      - CONNECTIONS=main
+      - LABEL_main=DépôtScolaire
+      - SERVER_main=db
+      - USER_main=symfony
+      - PASSWORD_main=${MARIADB_PASSWORD:-symfony}
+      - DATABASE_main=symfony
+      - ENGINE_main=mariadb@dbgate-plugin-mysql
+      - SINGLE_CONNECTION=main
+      - SINGLE_DATABASE=symfony
 
   mailpit:
     image: axllent/mailpit:latest
