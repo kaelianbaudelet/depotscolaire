@@ -34,8 +34,8 @@ class AppFixtures extends Fixture
         $admin = new User();
         $admin->setEmail('admin@demo.fr');
         $admin->setRoles(['ROLE_ADMIN']);
-        $admin->setFirstName('Admin');
-        $admin->setLastName('Demo');
+        $admin->setFirstName('Georges');
+        $admin->setLastName('Dubois');
         $admin->setAddress('1 rue de la Paix');
         $admin->setCity('Paris');
         $admin->setPostalCode('75000');
@@ -49,8 +49,8 @@ class AppFixtures extends Fixture
         $prof = new User();
         $prof->setEmail('prof@demo.fr');
         $prof->setRoles(['ROLE_TEACHER']);
-        $prof->setFirstName('Prof');
-        $prof->setLastName('Demo');
+        $prof->setFirstName('Marie');
+        $prof->setLastName('Curie');
         $prof->setAddress('2 rue de la Paix');
         $prof->setCity('Paris');
         $prof->setPostalCode('75000');
@@ -64,8 +64,8 @@ class AppFixtures extends Fixture
         $eleve = new User();
         $eleve->setEmail('eleve@demo.fr');
         $eleve->setRoles(['ROLE_USER']);
-        $eleve->setFirstName('Eleve');
-        $eleve->setLastName('Demo');
+        $eleve->setFirstName('Lucas');
+        $eleve->setLastName('Martin');
         $eleve->setAddress('3 rue de la Paix');
         $eleve->setCity('Paris');
         $eleve->setPostalCode('75000');
