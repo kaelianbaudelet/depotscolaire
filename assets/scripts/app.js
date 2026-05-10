@@ -50,5 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
         window.openDemoModal = function() {
             window.openModal('demo-modal');
         };
+
+        // Close when clicking overlay
+        demoModal.addEventListener('click', (e) => {
+            if (e.target === demoModal) {
+                window.closeDemoModal();
+            }
+        });
     }
 });
