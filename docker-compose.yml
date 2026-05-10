@@ -60,6 +60,8 @@ services:
       - db
     ports:
       - "8081:3000"
+    environment:
+      CONNECTIONS: MySQL,mysql,db,symfony,symfony,symfony
 
   mailpit:
     image: axllent/mailpit:latest
