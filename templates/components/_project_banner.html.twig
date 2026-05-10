@@ -1,0 +1,47 @@
+<div class="project-banner">
+    <div class="app-container project-banner__content">
+        <div class="project-banner__left">
+            <a href="{{ path('app_accueil') }}" class="project-banner__brand">
+                <img src="{{ asset('images/brand.svg') }}" alt="Dépôt Scolaire" class="project-banner__logo">
+                <span>Dépôt Scolaire</span>
+            </a>
+        </div>
+
+        <div class="project-banner__middle">
+            <p class="project-banner__title">Situation n°1 de l'épreuve E6 du BTS SIO</p>
+        </div>
+
+        <div class="project-banner__right">
+            <a href="https://github.com/kaelianbaudelet/depotscolaire" target="_blank" class="project-banner__link" title="Voir sur GitHub">
+                <svg class="project-banner__icon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                    <path fill-rule="evenodd" d="M8 1C4.133 1 1 4.13 1 7.993c0 3.09 2.006 5.71 4.787 6.635.35.064.478-.152.478-.337 0-.166-.006-.606-.01-1.19-1.947.423-2.357-.937-2.357-.937-.319-.808-.778-1.023-.778-1.023-.635-.434.048-.425.048-.425.703.05 1.073.72 1.073.72.624 1.07 1.638.76 2.037.582.063-.452.244-.76.444-.935-1.554-.176-3.188-.776-3.188-3.456 0-.763.273-1.388.72-1.876-.072-.177-.312-.888.07-1.85 0 0 .586-.189 1.924.716A6.711 6.711 0 018 4.381c.595.003 1.194.08 1.753.236 1.336-.905 1.923-.717 1.923-.717.382.963.142 1.674.07 1.85.448.49.72 1.114.72 1.877 0 2.686-1.638 3.278-3.197 3.45.251.216.475.643.475 1.296 0 .934-.009 1.688-.009 1.918 0 .187.127.404.482.336A6.996 6.996 0 0015 7.993 6.997 6.997 0 008 1z" clip-rule="evenodd"/>
+                </svg>
+            </a>
+
+            <div class="dropdown">
+                <button class="dropdown-toggle" type="button" aria-expanded="false" title="Plus d'options">
+                    <svg class="project-banner__icon" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 12C9.10457 12 10 12.8954 10 14C10 15.1046 9.10457 16 8 16C6.89543 16 6 15.1046 6 14C6 12.8954 6.89543 12 8 12Z"/>
+                        <path d="M8 6C9.10457 6 10 6.89543 10 8C10 9.10457 9.10457 10 8 10C6.89543 10 6 9.10457 6 8C6 6.89543 6.89543 6 8 6Z"/>
+                        <path d="M10 2C10 0.89543 9.10457 -4.82823e-08 8 0C6.89543 4.82823e-08 6 0.895431 6 2C6 3.10457 6.89543 4 8 4C9.10457 4 10 3.10457 10 2Z"/>
+                    </svg>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item" onclick="openDemoModal(); return false;">
+                        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 3a7 7 0 100 14 7 7 0 000-14zm-9 7a9 9 0 1118 0 9 9 0 01-18 0zm8-4a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1zm.01 8a1 1 0 102 0V9a1 1 0 10-2 0v5z" clip-rule="evenodd"/>
+                        </svg>
+                        Compte de test
+                    </a>
+                    <a href="https://docs.google.com/document/d/1SiLKpsgdg0lq3UwjO-PHA__Bqp5R8WkXjdn7-DoBXmk/edit?usp=sharing" target="_blank" class="dropdown-item">
+                        <svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 0H2V16H14V7H7V0Z"/>
+                            <path d="M9 0V5H14L9 0Z"/>
+                        </svg>
+                        Fiche situation
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

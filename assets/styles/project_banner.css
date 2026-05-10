@@ -1,0 +1,112 @@
+.project-banner {
+    background: linear-gradient(135deg, #1d4ed8, #2563eb); /* Vibrant blue gradient */
+    color: #ffffff;
+    padding: 0.75rem 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    z-index: 900;
+}
+
+.project-banner__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.project-banner__left,
+.project-banner__right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.project-banner__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+}
+
+.project-banner__logo {
+    height: 32px;
+    width: auto;
+    filter: brightness(0) invert(1); /* Make logo white if it's dark */
+}
+
+.project-banner__middle {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.project-banner__title {
+    font-weight: 600;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.project-banner__link {
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.project-banner__link:hover {
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+.project-banner__icon {
+    width: 24px;
+    height: 24px;
+}
+
+/* Dropdown Customization in Banner */
+.project-banner .dropdown-menu {
+    border: none;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    top: calc(100% + 0.5rem);
+}
+
+.project-banner .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 1rem;
+    color: #1e293b;
+    font-weight: 500;
+}
+
+.project-banner .dropdown-item:hover {
+    background-color: #f1f5f9;
+    color: #2563eb;
+}
+
+.project-banner .dropdown-item svg {
+    width: 18px;
+    height: 18px;
+    opacity: 0.7;
+}
+
+.project-banner .dropdown-toggle {
+    color: rgba(255, 255, 255, 0.9);
+    padding: 0.25rem;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.project-banner .dropdown-toggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .project-banner__title {
+        font-size: 0.85rem;
+    }
+    .project-banner__brand span {
+        display: none;
+    }
+}
