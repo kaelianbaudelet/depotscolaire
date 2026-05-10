@@ -15,7 +15,6 @@ services:
       DATABASE_URL: mysql://symfony:${MARIADB_PASSWORD:-symfony}@db:3306/symfony?serverVersion=11.4.2-MariaDB&charset=utf8mb4
       MAILER_DSN: smtp://mailpit:1025
     volumes:
-      - ./:/var/www/html:delegated
       - symfony_var:/var/www/html/var
     depends_on:
       db:
