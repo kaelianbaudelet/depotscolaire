@@ -1,6 +1,14 @@
 @import './dropdown.css';
 @import './modal.css';
 @import './tabs.css';
+
+@font-face {
+    font-family: 'Lexend';
+    src: url('../fonts/lexend.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* assets/styles/app.css */
 :root {
     /* Color Palette */
@@ -28,7 +36,7 @@
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
     
     /* Font */
-    --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-main: 'Lexend', system-ui, -apple-system, sans-serif;
 }
 
 /* =========================================
@@ -1140,4 +1148,20 @@ h1, h2, h3, h4 {
     border-top: 1px solid var(--border-color);
 }
 
+/* --- Demo Banner --- */
+.demo-banner {
+  background-color: #fef3c7;
+  padding: 8px 0;
+  text-align: center;
+  border-bottom: 1px solid #fcd34d;
+}
 
+.demo-banner-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #92400e;
+  line-height: 1.5;
+}
