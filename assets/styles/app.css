@@ -1238,20 +1238,22 @@ h1, h2, h3, h4 {
 
 .demo-account-item__creds {
     display: flex;
-    justify-content: space-between;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .demo-cred {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .demo-cred__label {
     font-size: 0.65rem;
     font-weight: 700;
     color: #94a3b8;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0;
 }
 
 .demo-cred__value {
