@@ -51,10 +51,10 @@ document.addEventListener('DOMContentLoaded', () => {
             window.openModal('demo-modal');
         };
 
-        // Close when clicking overlay
+        // Bloquer la fermeture par clic sur l'overlay pour la modal de démo
         demoModal.addEventListener('click', (e) => {
             if (e.target === demoModal) {
-                window.closeDemoModal();
+                e.stopPropagation();
             }
         });
     }
