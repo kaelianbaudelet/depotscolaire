@@ -1165,3 +1165,132 @@ h1, h2, h3, h4 {
   color: #92400e;
   line-height: 1.5;
 }
+
+/* --- Demo Modal --- */
+.demo-modal {
+    max-width: 550px !important;
+    border-radius: 1.5rem !important;
+    overflow: hidden;
+    padding: 0 !important;
+}
+
+.demo-modal__header {
+    padding: 2.5rem 2rem 1.5rem;
+    text-align: center;
+}
+
+.demo-modal__title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--color-text-main);
+    margin-bottom: 0.75rem;
+}
+
+.demo-modal__subtitle {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.demo-modal__accounts {
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.demo-account-item {
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+    border-radius: 1rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.demo-account-item__info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.demo-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.025em;
+}
+
+.demo-badge--admin { background: #e0f2fe; color: #0369a1; }
+.demo-badge--prof { background: #fdf2f8; color: #9d174d; }
+.demo-badge--eleve { background: #f0fdf4; color: #166534; }
+
+.demo-account-item__role {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.demo-account-item__creds {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.demo-cred {
+    display: flex;
+    flex-direction: column;
+}
+
+.demo-cred__label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #94a3b8;
+    margin-bottom: 0.25rem;
+}
+
+.demo-cred__value {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-text-main);
+}
+
+.demo-modal__footer {
+    padding: 2rem;
+    text-align: center;
+}
+
+.demo-modal__close-btn {
+    width: 100%;
+    padding: 1rem !important;
+    font-weight: 700 !important;
+    border-radius: 0.75rem !important;
+    font-size: 1.1rem !important;
+}
+
+/* --- Demo Login Link --- */
+.demo-login-hint {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+}
+
+.demo-login-hint__link {
+    font-weight: 700;
+    color: var(--color-primary);
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    text-decoration: underline;
+}
+
+.demo-login-hint__link:hover {
+    color: var(--color-primary-dark);
+}

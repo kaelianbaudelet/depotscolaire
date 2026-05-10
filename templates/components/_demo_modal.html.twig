@@ -1,0 +1,69 @@
+{% if app_demo|default(false) %}
+<div id="demo-modal" class="modal-overlay">
+    <div class="modal demo-modal">
+        <div class="demo-modal__header">
+            <h2 class="demo-modal__title">Mode Démonstration</h2>
+            <p class="demo-modal__subtitle">Bienvenue sur <strong>DépôtScolaire</strong>. Explorez le site avec ces comptes de test.</p>
+        </div>
+
+        <div class="demo-modal__accounts">
+            <div class="demo-account-item">
+                <div class="demo-account-item__info">
+                    <span class="demo-badge demo-badge--admin">ADMIN</span>
+                    <span class="demo-account-item__role">COMPTE ADMINISTRATEUR</span>
+                </div>
+                <div class="demo-account-item__creds">
+                    <div class="demo-cred">
+                        <span class="demo-cred__label">EMAIL</span>
+                        <span class="demo-cred__value">admin@demo.fr</span>
+                    </div>
+                    <div class="demo-cred">
+                        <span class="demo-cred__label">MOT DE PASSE</span>
+                        <span class="demo-cred__value">admin</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="demo-account-item">
+                <div class="demo-account-item__info">
+                    <span class="demo-badge demo-badge--prof">PROFESSEUR</span>
+                    <span class="demo-account-item__role">COMPTE ENSEIGNANT</span>
+                </div>
+                <div class="demo-account-item__creds">
+                    <div class="demo-cred">
+                        <span class="demo-cred__label">EMAIL</span>
+                        <span class="demo-cred__value">prof@demo.fr</span>
+                    </div>
+                    <div class="demo-cred">
+                        <span class="demo-cred__label">MOT DE PASSE</span>
+                        <span class="demo-cred__value">prof</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="demo-account-item">
+                <div class="demo-account-item__info">
+                    <span class="demo-badge demo-badge--eleve">ÉLÈVE</span>
+                    <span class="demo-account-item__role">COMPTE ÉTUDIANT</span>
+                </div>
+                <div class="demo-account-item__creds">
+                    <div class="demo-cred">
+                        <span class="demo-cred__label">EMAIL</span>
+                        <span class="demo-cred__value">eleve@demo.fr</span>
+                    </div>
+                    <div class="demo-cred">
+                        <span class="demo-cred__label">MOT DE PASSE</span>
+                        <span class="demo-cred__value">eleve</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-modal__footer">
+            <button type="button" class="app-btn app-btn--primary demo-modal__close-btn" onclick="closeDemoModal()">
+                Accéder à la démo &rarr;
+            </button>
+        </div>
+    </div>
+</div>
+{% endif %}

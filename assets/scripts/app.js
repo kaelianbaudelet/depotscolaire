@@ -33,4 +33,22 @@ document.addEventListener('DOMContentLoaded', () => {
             openDropdown.querySelector('.dropdown-toggle').setAttribute('aria-expanded', 'false');
         });
     });
+
+    // --- Demo Modal Logic ---
+    const demoModal = document.getElementById('demo-modal');
+    if (demoModal) {
+        const hasSeenDemoModal = localStorage.getItem('demo_modal_seen');
+        if (!hasSeenDemoModal) {
+            window.openModal('demo-modal');
+        }
+
+        window.closeDemoModal = function() {
+            localStorage.setItem('demo_modal_seen', 'true');
+            window.closeModal('demo-modal');
+        };
+
+        window.openDemoModal = function() {
+            window.openModal('demo-modal');
+        };
+    }
 });

@@ -54,6 +54,15 @@
         <p class="auth-footer">
             Pas encore de compte ? <a href="{{ path('app_register') }}" class="auth-footer__link">S'inscrire</a>
         </p>
+
+        {% if app_demo|default(false) %}
+            <div class="demo-login-hint">
+                Vous testez la démo ? 
+                <button type="button" class="demo-login-hint__link" onclick="openDemoModal()">
+                    Voir les comptes de tests
+                </button>
+            </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
