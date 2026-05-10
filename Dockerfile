@@ -60,9 +60,13 @@ RUN mkdir -p var \
 FROM symfony_base AS symfony_prod
 
 COPY docker/php/conf.d/app.ini /usr/local/etc/php/conf.d/app.ini
+COPY docker/php/docker-entrypoint-prod.sh /usr/local/bin/docker-entrypoint-prod.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint-prod.sh
+
 COPY --from=symfony_builder /var/www/html /var/www/html
 
 ENV APP_ENV=prod \
     APP_DEBUG=0
 
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint-prod.sh"]
 CMD ["apache2-foreground"]
