@@ -46,12 +46,25 @@ ENV APP_ENV=dev
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint-dev.sh"]
 CMD ["apache2-foreground"]
 
+FROM node:20-slim AS node_builder
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY webpack.config.js ./
+COPY assets/ ./assets/
+
+RUN npm run build
+
 FROM symfony_base AS symfony_builder
 
 COPY composer.json composer.lock symfony.lock* ./
 RUN composer install --prefer-dist --no-dev --no-scripts --no-progress --no-interaction
 
 COPY . .
+COPY --from=node_builder /app/public/build ./public/build
 
 RUN mkdir -p var \
     && composer dump-autoload --classmap-authoritative --no-dev \
