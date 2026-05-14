@@ -63,7 +63,7 @@ class AppFixtures extends Fixture
         // 3. Create Eleve
         $eleve = new User();
         $eleve->setEmail('eleve@demo.fr');
-        $eleve->setRoles(['ROLE_USER']);
+        $eleve->setRoles(['ROLE_STUDENT']);
         $eleve->setFirstName('Lucas');
         $eleve->setLastName('Martin');
         $eleve->setAddress('3 rue de la Paix');
@@ -93,7 +93,7 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 30; $i++) {
             $fakeEleve = new User();
             $fakeEleve->setEmail($faker->unique()->safeEmail);
-            $fakeEleve->setRoles(['ROLE_USER']);
+            $fakeEleve->setRoles(['ROLE_STUDENT']);
             $fakeEleve->setFirstName($faker->firstName);
             $fakeEleve->setLastName($faker->lastName);
             $fakeEleve->setAddress($faker->streetAddress);

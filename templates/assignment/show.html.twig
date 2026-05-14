@@ -97,7 +97,7 @@
         </div>
     {% endif %}
 
-    {% if is_granted('ROLE_STUDENT') %}
+    {% if submission or submission_form %}
         <div class="mt-lg">
             <h4 class="mb-sm">Mon travail</h4>
             
